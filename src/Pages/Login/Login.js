@@ -1,11 +1,134 @@
-import React from 'react'
+import React, { useState } from "react";
+import classes from "./Login.module.css";
+import { useDispatch } from "react-redux";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../Firebase/Firebase";
+import { login } from "../../Store/userSlice";
+import { Alert } from "react-bootstrap";
+import CenteredSpinner from "../../Components/Loading/CenteredSpinner";
+import Navbar from "../../Components/Navigation/Navbar";
 
 function Login() {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  
+  const loginHandler = () => {
+    setLoading(true);
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userAuth) => {
+      dispatch(
+        login({
+          username: userAuth.user.displayName,
+          uid: userAuth.user.uid,
+          profilePictureUrl: userAuth.user.photoURL,
+        })
+      );
+      setLoading(false)
+    })
+    .catch((err) => {
+      setError(err.message);
+      setLoading(false);
+    });
+  }
+
   return (
     <>
-    
+      <Navbar />
+      <div className="container-fluid">
+        <div className="row">
+          <div className={`col ${classes.rightpage}`}>
+            <div
+              className={`d-flex flex-column align-items-center justify-content-center ${classes.layout}`}
+            >
+              <div className="border rounded-3 shadow">
+                <div className="d-flex flex-column align-items-center m-5 p-3">
+                  <h1 className={`mb-4 ${classes.headingtext}`}>LOGIN ADMIN</h1>
+                  <div className="d-flex flex-column">
+                    <label htmlFor="email" className={`form-label mb-2 ${classes.labeltext}`}>
+                      Your Email
+                    </label>
+                    <div className="input-group mb-3">
+                      <input
+                        type="email"
+                        className={`form-control ${classes.forminput}`}
+                        id="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Your Email"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex flex-column mb-3">
+                    <label htmlFor="password" className={`form-label mb-2 ${classes.labeltext}`}>
+                      Password
+                    </label>
+                    <div className="input-group">
+                      <input
+                        type="password"
+                        className={`form-control ${classes.forminput}`}
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex flex-column mb-3 ">
+                    <div className="form-check" style={{ paddingRight: "260px" }}>
+                      <input
+                        className={`form-check-input ${classes.checkbox}`}
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                        />
+                      <label className={`form-check-label ${classes.labeltext}`} htmlFor="flexCheckDefault">
+                        Remember Me
+                      </label>
+                    </div>
+                  </div>
+                  {!loading &&
+                    <div className="d-flex flex-column" style={{width: "400px"}}>
+                      {error && <Alert variant="danger">{error}</Alert>}
+                    </div>
+                  }
+                  {loading && 
+                    <div className="d-flex flex-column mb-3 ">
+                      <CenteredSpinner />
+                    </div>
+                  }
+                  <div className="d-flex flex-column mb-3 ">
+                    <button
+                      type="button"
+                      className={`btn ${classes.buttonreset}`}
+                      onClick={loginHandler}
+                      >
+                      Login
+                    </button>
+                  </div>               
+                  <p className={`${classes.smalltext}`}>
+                    Forgotten your password?
+                    <span>
+                      <a
+                        className={`nav-link ps-2 ${classes.colorteks} ${classes.smalltext}`}
+                        href="/forgot_password"
+                        >
+                        Reset
+                      </a>
+                    </span>{" "}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default Login
+export default Login;
