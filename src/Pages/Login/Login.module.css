@@ -1,0 +1,71 @@
+.colorteks{
+    color: #0D2341 !important;
+    font-weight: bold;
+    text-decoration: none !important;
+    display: inline !important;
+}
+
+.leftpage{
+    background-color: #133461;
+}
+
+.lefttextcolor {
+    color: #fff !important;
+}
+
+.rightpage{
+    color: #0D2341;
+}
+
+.layout{
+    height: 93vh;
+}
+
+.sizeheading {
+    font-family: "Mulish", sans-serif !important;
+    font-weight: bold !important;
+}
+
+.sizetext {
+    font-size: 19px !important;
+    font-family: "Poppins", sans-serif !important;
+    font-weight: lighter !important;
+}
+
+.forminput{
+    width: 400px !important; 
+    height: 60px !important;
+    border-color: #19345E !important;
+    border-radius: 10px !important;
+}
+
+.forminput::placeholder{
+    font-family: "Poppins", sans-serif;
+}
+
+.buttonreset{
+    background: #F47522 !important;
+    width: 400px !important; 
+    height: 60px !important; 
+    border-radius: 1rem !important; 
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+.checkbox{
+    border-color: #19345E !important;
+    border-radius: 0 !important;
+}
+
+.headingtext{
+    font-family: "Mulish", sans-serif;
+}
+
+.smalltext {
+    font-family: "Poppins", sans-serif;
+}
+
+.labeltext {
+    font-family: "Poppins", sans-serif !important;
+    font-weight: 500 !important;
+}
