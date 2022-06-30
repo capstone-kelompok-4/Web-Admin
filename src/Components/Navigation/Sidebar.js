@@ -4,8 +4,8 @@ import AlterraLogo from "../../Assets/Images/alterra_logo.png";
 import UserIcon from "../../Assets/Images/icon_user.png";
 import { Link } from 'react-router-dom';
 
-const Sidebar = ({func}) => {
-  const [active, setActive] = useState("Dashboard");
+const Sidebar = ({activeNow}) => {
+  const [active, setActive] = useState(activeNow);
 
   const sidebarItems = [
     {
@@ -19,7 +19,7 @@ const Sidebar = ({func}) => {
       icon: UserIcon,
     },
     {
-      path: "/",
+      path: "/manage_courses",
       name: "Manage Courses",
       icon: UserIcon,
     },
