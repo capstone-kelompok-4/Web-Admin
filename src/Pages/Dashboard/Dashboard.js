@@ -14,7 +14,7 @@ function Dashboard() {
   }, [])
   return (
     <>
-      <Sidebar/>
+      <Sidebar activeNow="Dashboard"/>
       <div className={classes.container}>
        <Header data="Dashboard" />
        <div className={classes.containerContent}>

@@ -1,0 +1,92 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-left: 18%;
+  width: 82%;
+}
+
+.containerContent {
+  background-color: #F0F5FD;
+  padding: 3rem;
+}
+
+.title{
+  font-family: "Mulish", sans-serif;
+  font-weight: 600;
+  color: #0D2341;
+}
+
+.containerForm{
+  padding: 3rem;
+  background-color: #FFF;
+  width: 100%;
+  border-radius: 20px;
+  margin: 3rem 0;
+}
+
+.containerForm > .titleForm {
+  color: #0D2341;
+  font-family: "Poppins", sans-serif;
+}
+
+.containerForm > .description {
+  color: #0D2341;
+  opacity: .5;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+}
+
+.containerForm > form {
+  margin: 2rem 0;
+}
+
+.containerForm > form > label {
+  display: block;
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.containerForm > form > input, .containerForm > form > textarea{
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #0D2341;
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  margin: 1rem 0;
+}
+
+/* .containerForm > form > input:focus, .containerForm > form > textarea:focus{
+  outline: 1px solid #FF6C00;
+  border: none;
+  color: #FF6C00;
+} */
+
+.buttonWrapper {
+  display: flex;
+  column-gap: 20px;
+}
+.btnCancel {
+  padding: 15px 40px;
+  background-color: #fff;
+  color: #0D2341;
+  border: 1px solid #D6DEEC;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.btnSave{
+  padding: 15px 40px;
+  background-color: #FF6C00;
+  color: #FFF;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+
+}

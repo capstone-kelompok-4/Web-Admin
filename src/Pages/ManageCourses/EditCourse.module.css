@@ -1,0 +1,11 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-left: 18%;
+  width: 82%;
+}
+
+.containerContent {
+  background-color: #F0F5FD;
+  padding: 3rem;
+}

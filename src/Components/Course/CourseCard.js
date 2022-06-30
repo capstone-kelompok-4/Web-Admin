@@ -8,17 +8,17 @@ import ProgressBar from '../ProgressBar/ProgressBar';
 function CourseCard({course_id, title, img, progress, rating, total_material, showProgressBar, showInfo}) {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/preview_course/${course_id}`)
+    navigate(`/manage_courses/edit_course/${course_id}`)
   }
   return (
     <div className={`col p-0 ${classes.parent}`}>
       <div className={`card h-100 m-auto ${classes.singleCard}`}>
         <img src={img} className="card-img-top" alt="courseCardImg" width="250px" height="150px" style={{padding: "15px 15px 0 15px", borderRadius: "20px 20px 0 0"}}/>
-        <div className="card-body text-start">
+        <div className="card-body text-start h-100">
           <h5 className={classes.cardTitle} onClick={handleClick}>{title}</h5> 
         </div>
         {showProgressBar &&
-          <div className="card-body">
+          <div className="card-body ">
             {/* <ProgressBar animated bgcolor="#0275d8" now={progress} />  */}
             <ProgressBar bgcolor="#133461" progress={progress}  height={10} />
             <p className={classes.completed}>Complete:  <span className='fw-bold'>{progress}%</span></p>
@@ -38,8 +38,8 @@ function CourseCard({course_id, title, img, progress, rating, total_material, sh
           </div>
           <div className={classes.readMore}>
             <button className={classes.btn}>
-              <Link to={`/preview_course/${course_id}`}>
-                Read More
+              <Link to={`/manage_courses/edit_course/${course_id}`}>
+                Edit Course
               </Link>
             </button>
           </div>
