@@ -1,16 +1,50 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import CoursesContainer from '../../Components/Course/CoursesContainer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import classes from "./Dashboard.module.css";
 
 function Dashboard() {
+  const [courseData, setCourseData] = useState([]);
+  const baseURL = "https://62a160e6cc8c0118ef4a5d6c.mockapi.io";
+
+  useEffect(() => {
+    axios.get(`${baseURL}/courses`).then(res => setCourseData(res.data)).catch(err => console.log(err.message));
+  }, [])
   return (
     <>
       <Sidebar/>
       <div className={classes.container}>
        <Header data="Dashboard" />
        <div className={classes.containerContent}>
-        <h1>Halo</h1>
+        <div className={classes.infoWrapper}>
+          <div className={classes.wrapper}>
+            <p className={classes.title}>Total Users</p>
+            <p className={classes.info}>84</p>
+          </div>
+          <div className={classes.wrapper}>
+            <p className={classes.title}>Total Courses</p>
+            <p className={classes.info}>12</p>
+          </div>
+          <div className={classes.wrapper}>
+            <p className={classes.title}>Total Requests</p>
+            <p className={classes.info}>6</p>
+          </div>
+        </div>
+        <div className={classes.statisticWrapper}>
+          <div className={classes.left}>
+            <div className={classes.statistics}>
+              <p className={classes.title}>Access Statistics</p>
+            </div>
+          </div>
+          <div className={classes.right}>
+            <div className={classes.recentActivity}>
+              <p className={classes.title}>Recent Activity</p>  
+            </div>
+          </div>
+        </div>
+        <CoursesContainer title="Manage Courses" data={courseData} showInfo={true} showProgressBar={false} showMoreAble={true}/>
        </div>
       </div>
     </>
