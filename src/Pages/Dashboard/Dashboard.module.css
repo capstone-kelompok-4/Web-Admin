@@ -7,4 +7,66 @@
 
 .containerContent {
   background-color: #F0F5FD;
+  padding: 0 3rem 5rem;
 }
+
+/* Info */
+.infoWrapper{
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.wrapper{
+  background-color: #FFF;
+  border-radius: 12px;
+  color: #0d2341;
+  padding: 30px;
+  width: 30%;
+}
+
+.title{
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+} 
+
+.wrapper > .info {
+  margin: 0;
+  font-size: 32px;
+  font-weight: bold;
+}
+/* Info */
+
+/* Statistics & Recent Activity */
+.statisticWrapper{
+  display: flex;
+  margin: 40px 0;
+}
+
+.statisticWrapper > .left {
+  flex-basis: 60%;
+}
+.statisticWrapper > .right {
+  flex-basis: 40%;
+}
+
+.statisticWrapper > .left > .statistics {
+  background-color: #FFF;
+  border-radius: 12px;
+  color: #0d2341;
+  padding: 30px;
+  width: 90%;
+  height: 400px;
+}
+
+.statisticWrapper > .right > .recentActivity{
+  background-color: #FFF;
+  border-radius: 12px;
+  color: #0d2341;
+  padding: 30px;
+  width: 100%;
+  height: 400px;
+}
+

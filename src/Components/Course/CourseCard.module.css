@@ -1,0 +1,56 @@
+.cardTitle{
+  cursor: pointer;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  font-size: 16px;
+}
+
+.singleCard{
+  border: none !important;
+  border-radius: 10px !important;
+  width: 16rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #FFF !important;
+  transition: .4s all ease-in-out;
+}
+
+.singleCard:hover{
+  box-shadow: 0px 6px 20px #C5CDD4;
+  transition: .4s all ease-in-out;
+}
+
+.completed{
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+.info{
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.readMore a{
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  font-size: 14px;
+}
+.readMore a:hover{
+  color: #0D2341;
+}
+
+.btn{
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #D6DEEC;
+  color: #0D2341;
+  border: none;
+  font-weight: 500;
+}
