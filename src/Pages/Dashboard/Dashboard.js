@@ -1,17 +1,17 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import CoursesContainer from '../../Components/Course/CoursesContainer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import classes from "./Dashboard.module.css";
+import { getAllCourses } from '../../Configs/MockAPI';
 
 function Dashboard() {
   const [courseData, setCourseData] = useState([]);
-  const baseURL = "https://62a160e6cc8c0118ef4a5d6c.mockapi.io";
 
   useEffect(() => {
-    axios.get(`${baseURL}/courses`).then(res => setCourseData(res.data)).catch(err => console.log(err.message));
+    getAllCourses().then(res => setCourseData(res.data)).catch(err => console.error(err.message));
   }, [])
+
   return (
     <>
       <Sidebar activeNow="Dashboard"/>
