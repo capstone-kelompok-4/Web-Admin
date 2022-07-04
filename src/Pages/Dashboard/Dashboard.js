@@ -4,6 +4,7 @@ import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import classes from "./Dashboard.module.css";
 import { getAllCourses } from '../../Configs/MockAPI';
+import Footer from '../../Components/Footer/Footer';
 
 function Dashboard() {
   const [courseData, setCourseData] = useState([]);
@@ -47,6 +48,7 @@ function Dashboard() {
         <CoursesContainer title="Manage Courses" data={courseData} showInfo={true} showProgressBar={false} showMoreAble={true}/>
        </div>
       </div>
+      <Footer />
     </>
   )
 }

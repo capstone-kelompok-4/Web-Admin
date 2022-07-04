@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Search from '../../Components/Search/Search';
 import CourseCard from '../../Components/Course/CourseCard';
 import { getAllCourses } from '../../Configs/MockAPI';
+import Footer from '../../Components/Footer/Footer';
 
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -65,6 +66,7 @@ const ManageCourses = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   )
 }

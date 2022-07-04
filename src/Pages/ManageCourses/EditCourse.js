@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import Button from '../../Components/Button/Button';
+import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import { getCourseByID } from '../../Configs/MockAPI';
@@ -161,6 +162,7 @@ const EditCourse = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   )
 }

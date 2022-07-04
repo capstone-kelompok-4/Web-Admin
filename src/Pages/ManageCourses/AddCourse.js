@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Button from '../../Components/Button/Button';
+import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import classes from "./AddCourse.module.css";
@@ -171,6 +172,7 @@ const AddCourse = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   )
 }
