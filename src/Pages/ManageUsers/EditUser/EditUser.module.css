@@ -1,0 +1,209 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20%;
+    width: 80%;
+}
+
+.containerContent {
+    background-color: #F0F5FD;
+    padding: 3rem;
+}
+
+.title {
+    font-family: "Mulish", sans-serif;
+    font-weight: 600;
+    color: #0D2341;
+}
+
+.containerForm {
+    padding: 3rem;
+    background-color: #FFF;
+    width: 100%;
+    border-radius: 20px;
+    margin: 3rem 0;
+}
+
+.containerForm>.titleForm {
+    color: #0D2341;
+    font-family: "Poppins", sans-serif;
+}
+
+.containerForm>.description {
+    color: #0D2341;
+    opacity: .5;
+    font-weight: 500;
+    font-family: "Poppins", sans-serif;
+}
+
+.containerForm>form {
+    margin: 2rem 0;
+}
+
+.containerForm>form>label {
+    display: block;
+    font-family: "Poppins", sans-serif;
+    color: #0D2341;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.containerForm>form>input,
+.containerForm>form>select,
+.containerForm>form>textarea {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #0D2341;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: "Poppins", sans-serif;
+    margin: 1rem 0;
+}
+
+.containerForm>form>input[type=file] {
+    border: none;
+    padding: 20px 0;
+}
+
+.containerForm>form>input[type=file]:focus {
+    outline: none;
+    color: #0D2341;
+}
+
+/*  */
+.twocontent{
+    display: flex !important;
+    justify-content: space-between !important;
+}
+
+.thecontent{
+    flex-direction: column !important;
+}
+
+.containerForm>form>.twocontent>.thecontent>label {
+    display: block;
+    font-family: "Poppins", sans-serif;
+    color: #0D2341;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.containerForm>form>.twocontent>.thecontent>input{
+    width: 100%;
+    padding: 20px;  
+    border: 1px solid #0D2341;
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: "Poppins", sans-serif;
+    margin: 1rem 0;
+}
+
+.containerForm>form>.twocontent>.thecontent>input[type=file] {
+    border: none;
+    padding: 20px 0;
+}
+
+.containerForm>form>.twocontent>.thecontent>input[type=file]:focus {
+    outline: none;
+    color: #0D2341;
+}
+
+/*  */
+
+.radioWrapper {
+    margin: 1rem 0;
+    color: #133461;
+    font-weight: 500;
+    font-size: 18px;
+    display: flex;
+    column-gap: 40px;
+}
+
+.formRadio {
+    margin: 20px 0;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.formRadio>.labelForCheck {
+    font-size: 18px;
+    font-family: "Poppins", sans-serif;
+}
+
+.formRadio>input.accent {
+    height: 40px !important;
+    width: 40px !important;
+    margin-right: 20px;
+}
+
+.accent:checked {
+    background-color: #0D2341 !important;
+    border-color: #0D2341 !important;
+}
+
+.accent:checked+.labelForCheck {
+    color: #0D2341;
+}
+
+.formRadio input[type=checkbox] {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+.containerForm>form>input:focus,
+.containerForm>form>textarea:focus,
+.containerForm>form>select:focus {
+    outline: 1px solid #FF6C00;
+    border: none;
+    color: #FF6C00;
+}
+
+.containerForm>form>input:focus::placeholder,
+.containerForm>form>textarea:focus::placeholder,
+.containerForm>form>select:focus::placeholder {
+    color: #FF6C00;
+}
+
+/*  */
+
+.containerForm>form>.twocontent>.thecontent>input:focus {
+    outline: 1px solid #FF6C00;
+    border: none;
+    color: #FF6C00;
+}
+
+.containerForm>form>.twocontent>.thecontent>input:focus::placeholder{
+    color: #FF6C00;
+}
+
+/*  */
+
+.buttonWrapper {
+    display: flex;
+    column-gap: 20px;
+    margin-top: 40px;
+}
+
+.btnCancel {
+    padding: 15px 40px;
+    background-color: #fff;
+    color: #0D2341;
+    border: 1px solid #D6DEEC;
+    border-radius: 10px;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.btnSave {
+    padding: 15px 40px;
+    background-color: #FF6C00;
+    color: #FFF;
+    border: none;
+    border-radius: 10px;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+
+}
