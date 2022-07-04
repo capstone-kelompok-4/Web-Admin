@@ -14,7 +14,7 @@ const Sidebar = ({activeNow}) => {
       icon: UserIcon,
     },
     {
-      path: "/",
+      path: "/manage_users",
       name: "Manage Users",
       icon: UserIcon,
     },
