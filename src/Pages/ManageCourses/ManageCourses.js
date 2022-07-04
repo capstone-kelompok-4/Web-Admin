@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from "axios";
 import Button from '../../Components/Button/Button';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
@@ -8,13 +7,19 @@ import AddIcon from "../../Assets/Icons/addIcon.svg";
 import { Link } from "react-router-dom";
 import Search from '../../Components/Search/Search';
 import CourseCard from '../../Components/Course/CourseCard';
+import { getAllCourses } from '../../Configs/MockAPI';
 
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
-  const baseURL = "https://62a160e6cc8c0118ef4a5d6c.mockapi.io";
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
-    axios.get(`${baseURL}/courses`).then(res => setCourses(res.data)).catch(err => console.log(err.message));
+    getAllCourses().then(res => setCourses(res.data)).catch(err => console.log(err.message));
   }, [])
+
+  const searchCoursesHandler = (e) => {
+    setSearchTerm(e.target.value);
+  }
 
   return (
     <>
@@ -30,12 +35,18 @@ const ManageCourses = () => {
               <Link to="/manage_courses/add_course">
                 <Button className={classes.addBtn} name="Add Course" icon={AddIcon}/>
               </Link>
-              <Search placeholder="Search Course" className={classes.searchBar} />
+              <Search placeholder="Search Course" className={classes.searchBar} onChange={searchCoursesHandler} />
             </div>
           </div>
           <div className={classes.allCourse}>
             <div className="row row-cols-1 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 g-5 my-0 ">
-              {courses.map((course) => {
+              {courses.filter((course) => {
+                if(searchTerm === ""){
+                  return course
+                } else if (course.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+                  return course
+                } return false
+              }).map((course) => {
                 return(
                   <CourseCard
                     key={course.id}

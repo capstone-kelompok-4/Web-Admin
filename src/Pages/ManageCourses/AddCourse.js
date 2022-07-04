@@ -8,29 +8,37 @@ const AddCourse = () => {
   const initialCourseState = {
     courseName: "",
     description: "",
+    section: "",
     courseBanner: "",
     targetLearner: "",
     objectiveLearning: "",
-    methodologyLearning: [
-      {
-        oneOnOneSessionWithMentor: false,
-        readingMaterial: false,
-        videoLearning: false,
-        quiz: false,
-        videoRecording: false,
-        flexibleLearning: false,
-      }
-    ],
+    methodologyLearning: {
+      oneOnOneSessionWithMentor: false,
+      readingMaterial: false,
+      videoLearning: false,
+      quiz: false,
+      videoRecording: false,
+      flexibleLearning: false,
+    }
   }
 
   const [course, setCourse] = useState(initialCourseState)
 
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
-    setCourse({
-      ...course,
-      [name]: value
-    })
+    const {name, value, files} = e.target;
+    if(name === "courseBanner"){
+      setCourse({
+        ...course,
+        [name]: files[0]
+      })
+    } else if (name === "methodologyLearning") {
+  
+    } else {
+      setCourse({
+        ...course,
+        [name]: value
+      })
+    }
 
     console.log(course);
   }
@@ -63,7 +71,7 @@ const AddCourse = () => {
                 required
                 value={course.courseName} 
                 onChange={handleInputChange}
-                />
+              />
               <label htmlFor="description">Description</label>
               <textarea 
                 name="description" 
@@ -74,6 +82,24 @@ const AddCourse = () => {
                 onChange={handleInputChange}
                 placeholder='Set the description of the course'>
               </textarea>
+              <label htmlFor="section">Section</label>
+              <input 
+                type="text"
+                id='section' 
+                name='section' 
+                placeholder='e.g 10 section'
+                required
+                value={course.section} 
+                onChange={handleInputChange}
+              />
+              <label htmlFor="courseBanner">Course Banner</label>
+              <input 
+                type="file" 
+                name="courseBanner" 
+                id="courseBanner"
+                onChange={handleInputChange} 
+                accept="image/png, image/jpg, image/gif, image/jpeg" 
+              />
               <label htmlFor="targetLearner">Target Learner</label>
               <textarea 
                 name="targetLearner" 
@@ -94,7 +120,49 @@ const AddCourse = () => {
                 onChange={handleInputChange}
                 placeholder='Description of objective learning for sylabus learner'>
               </textarea>
-
+              <label htmlFor="methodologyLearning">Methodology Learning</label>
+              <div className={classes.radioWrapper}>
+                <div className={classes.left}>
+                  <div className={`form-check ${classes.formRadio}`}>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton1"/>
+                    <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton1">
+                      1 on 1 Session With Mentor
+                    </label>
+                  </div>
+                  <div className={`form-check ${classes.formRadio}`}>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton2"/>
+                    <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton2">
+                      Reading Materials
+                    </label>
+                  </div>
+                  <div className={`form-check ${classes.formRadio}`}>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton3"/>
+                    <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton3">
+                      Video Learning
+                    </label>
+                  </div>
+                </div>
+                <div className={classes.right}>
+                  <div className={`form-check ${classes.formRadio}`}>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton4"/>
+                    <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton4">
+                      Quiz
+                    </label>
+                  </div>
+                  <div className={`form-check ${classes.formRadio}`}>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton5"/>
+                    <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton4">
+                      Video Recording
+                    </label>
+                  </div>
+                  <div className={`form-check ${classes.formRadio}`}>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton6"/>
+                    <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton4">
+                      Flexible Learning
+                    </label>
+                  </div>
+                </div>
+              </div>
               <div className={classes.buttonWrapper}>
                 <Button className={classes.btnCancel} name="Cancel" onClick={handlerCancel} />
                 <Button className={classes.btnSave} name="Save" />
