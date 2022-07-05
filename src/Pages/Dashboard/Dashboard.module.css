@@ -7,7 +7,7 @@
 
 .containerContent {
   background-color: #F0F5FD;
-  padding: 0 3rem 5rem;
+  padding: 0 3rem 6rem;
 }
 
 /* Info */
@@ -34,6 +34,7 @@
 
 .wrapper > .info {
   margin: 0;
+  font-family: "Poppins", sans-serif;
   font-size: 32px;
   font-weight: bold;
 }

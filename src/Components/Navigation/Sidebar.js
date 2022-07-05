@@ -24,17 +24,17 @@ const Sidebar = ({activeNow}) => {
       icon: UserIcon,
     },
     {
-      path: "/",
+      path: "/upload_files",
       name: "Upload Files",
       icon: UserIcon,
     },
     {
-      path: "/",
+      path: "/data_reports",
       name: "Data Reports",
       icon: UserIcon,
     },
     {
-      path: "/",
+      path: "/request",
       name: "Request",
       icon: UserIcon,
     },

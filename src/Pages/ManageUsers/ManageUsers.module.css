@@ -16,7 +16,7 @@
     row-gap: 40px;
 }
 
-.infoWrapper>.title>h2 {
+.infoWrapper> .title  {
     font-family: "Mulish", sans-serif;
     font-weight: 600;
     color: #0D2341;
@@ -31,20 +31,20 @@
     justify-content: space-between !important;
 }
 
-.actionleft {
+.actionLeft {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     row-gap: 40px;
 }
 
-.actionleft> h4 {
+.actionLeft > h4 {
     font-family: "Mulish", sans-serif;
     font-weight: 700;
     color: #0D2341;
 }
 
-.actionleft> h5 {
+.actionLeft > h5 {
     font-family: "Mulish", sans-serif;
     font-weight: 700;
     color: #0D2341;
@@ -110,3 +110,69 @@
 }
 
 /* Search Bar */
+
+/* Dropdown Button */
+.dropdownBtn {
+    background-color: #F0F5FD;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    color: grey;
+    margin: 0 10px;
+    font-family: "Poppins";
+}
+
+.dropdownBtn:focus{
+    outline: none;
+}
+/* Dropdown Button */
+
+/* Table */
+.table{
+    margin: 20px 0
+  }
+
+.table > table{
+width: 100%;
+font-family: "Poppins", sans-serif;
+border-collapse: separate;
+border-spacing: 0 20px;
+}
+
+.table > table > thead > tr > td{
+font-size: 18px;
+font-weight: 500;
+color: #0D2341;
+}
+
+.table > table > tbody > tr > td{
+font-weight: 500;
+color: #0D2341;
+}
+
+.downloadBtn {
+background-color: #FFF;
+color: #FF6C00;
+padding: 10px 20px;
+border-radius: 10PX;
+border: 1px solid #FF6C00;
+transition: .3s all ease-in-out;
+}
+
+.downloadBtn:hover{
+background-color: #FF6C00;
+color: #FFF;
+border: none;
+transition: .3s all ease;
+}
+/* Table */
+
+/* Pagination */
+.pagination{
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-family: "Poppins", sans-serif;
+margin: 3rem 0;
+}
+/* Pagination */

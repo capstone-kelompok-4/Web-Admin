@@ -37,6 +37,7 @@
     height: 60px !important;
     border-color: #19345E !important;
     border-radius: 10px !important;
+    font-family: "Poppins", sans-serif;
 }
 
 .forminput::placeholder{
@@ -50,6 +51,7 @@
     border-radius: 1rem !important; 
     color: #fff !important;
     font-weight: bold !important;
+    font-family: "Poppins", sans-serif;
 }
 
 .checkbox{

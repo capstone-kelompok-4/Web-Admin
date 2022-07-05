@@ -10,6 +10,9 @@ import EditCourse from './Pages/ManageCourses/EditCourse';
 import ManageUsers from './Pages/ManageUsers/ManageUsers';
 import AddUser from './Pages/ManageUsers/AddUser/AddUser';
 import EditUser from './Pages/ManageUsers/EditUser/EditUser';
+import DataReports from './Pages/DataReport/DataReports';
+import UploadFiles from './Pages/Upload/UploadFiles';
+import Request from './Pages/Request/Request';
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
         <Route path="/manage_users" exact element={<ManageUsers/>} />
         <Route path="/manage_users/add_user" element={<AddUser/>} />
         <Route path="/manage_users/edit_user/:1" element={<EditUser/>} />
+        <Route path="/data_reports" element={<DataReports />}/>
+        <Route path="/upload_files" element={<UploadFiles />}/>
+        <Route path="/request" element={<Request />}/>
       </Routes>
     </>
   );

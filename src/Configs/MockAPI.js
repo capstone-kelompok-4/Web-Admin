@@ -11,6 +11,18 @@ export const getCourseByID = (payload) => {
   return axios.get(`${BASE_URL}/courses/${payload}`);
 }
 
+export const getAllUsers = () => {
+  return axios.get(`${BASE_URL2}/users`);
+}
+
+export const getAllMaterials = () => {
+  return axios.get(`${BASE_URL2}/materials`);
+}
+
+export const getAllRequest = () => {
+  return axios.get(`${BASE_URL2}/requestUsers`);
+}
+
 export const getUserByID = (payload) => {
   return axios.get(`${BASE_URL2}/users/${payload}`);
 }

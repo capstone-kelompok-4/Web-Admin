@@ -1,0 +1,148 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+  width: 80%;
+}
+
+.containerContent {
+  background-color: #F0F5FD;
+  padding: 3rem 3rem 6rem 3rem;
+}
+
+.containerContent h3{
+  color: #0D2341;
+  font-family: "Mulish";
+  font-weight: bold;
+}
+
+.tableRequest {
+  background-color: #FFF;
+  margin: 2rem 0;
+  border-radius: 10px;
+  padding: 40px 30px;
+}
+
+.tableRequest > .filterSection > .top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  margin-bottom: 10px;
+}
+.tableRequest > .filterSection > .bottom{
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  margin-bottom: 10px;
+}
+.tableRequest > .filterSection > .top > h5, .tableRequest > .filterSection > .bottom > h5 {
+  margin: 0;
+}
+.dropdownBtn {
+  background-color: #F0F5FD;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  color: grey;
+  margin: 0 10px;
+}
+.dropdownBtn:focus{
+  outline: none;
+}
+
+/* Search Bar */
+.searchBar{
+  padding: 0;
+  border-radius: 10px;
+  width: 350px;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 1px solid #0D2341;
+}
+
+.searchBar input{
+  margin: 0;
+  padding: 10px 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  width: 80%;
+  background: transparent;
+  font-family: "Poppins", serif;
+  border: none;
+}
+
+.searchBar input::placeholder{
+  color: #133461;
+}
+
+.searchBar img{
+  margin-left: 20px;
+}
+
+.searchBar input:focus{
+  outline: none;
+}
+/* Search Bar */
+
+/* Table */
+.table{
+  margin: 20px 0
+}
+.table > table{
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  border-collapse: separate;
+  border-spacing: 0 20px;
+}
+
+.table > table > thead > tr > td{
+  font-size: 18px;
+  font-weight: 500;
+  color: #0D2341;
+}
+.table > table > tbody > tr > td{
+  font-weight: 500;
+  color: #0D2341;
+}
+
+.btnStatusPending{
+  background-color: #E7E7E7;
+  border-radius: 10px;
+  border: none;
+  padding: 4px 20px;
+  width: 80%;
+  color: grey;
+  cursor: default !important;
+}
+.btnStatusOnCheck{
+  background-color: #8EADDC;
+  border-radius: 10px;
+  border: none;
+  padding: 4px 20px;
+  width: 80%;
+  color: #FFF;
+  cursor: default !important;
+}
+.btnStatusAccepted{
+  background-color: #0ABA61;
+  border-radius: 10px;
+  border: none;
+  padding: 4px 20px;
+  width: 80%;
+  color: #FFF;
+  cursor: default !important;
+}
+/* Table */
+
+
+.pagination{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
+}
