@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Outlet, Routes, Route } from 'react-router-dom';
 import Dashboard from "./Pages/Dashboard/Dashboard"
 import Login from './Pages/Login/Login';
 import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';
@@ -13,24 +13,30 @@ import EditUser from './Pages/ManageUsers/EditUser/EditUser';
 import DataReports from './Pages/DataReport/DataReports';
 import UploadFiles from './Pages/Upload/UploadFiles';
 import Request from './Pages/Request/Request';
+import PublicRoute from './Components/PublicRoute/PublicRoute';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Dashboard/>} />
-        <Route path="/login" exact element={<Login />} />
-        <Route path="/forgot_password" exact element={<ForgotPassword />} />
-        <Route path="/manage_courses" exact element={<ManageCourses/>} />
-        <Route path="/manage_courses/add_course" element={<AddCourse/>} />
-        <Route path="/manage_courses/edit_course/:course_id" element={<EditCourse/>} />
-        <Route path="/manage_users" exact element={<ManageUsers/>} />
-        <Route path="/manage_users/add_user" element={<AddUser/>} />
-        <Route path="/manage_users/edit_user/:1" element={<EditUser/>} />
-        <Route path="/data_reports" element={<DataReports />}/>
-        <Route path="/upload_files" element={<UploadFiles />}/>
-        <Route path="/request" element={<Request />}/>
+        <Route element={<PublicRoute/>}>
+          <Route path="/login" exact element={<Login />} />
+          <Route path="/forgot_password" exact element={<ForgotPassword />} />
+        </Route>
+        <Route element={<PrivateRoute/>}>
+          <Route path="/" element={<Dashboard/>} />
+          <Route path="/manage_courses" exact element={<ManageCourses/>} />
+          <Route path="/manage_courses/add_course" element={<AddCourse/>} />
+          <Route path="/manage_courses/edit_course/:course_id" element={<EditCourse/>} />
+          <Route path="/manage_users" exact element={<ManageUsers/>} />
+          <Route path="/manage_users/add_user" element={<AddUser/>} />
+          <Route path="/manage_users/edit_user/:1" element={<EditUser/>} />
+          <Route path="/data_reports" element={<DataReports />}/>
+          <Route path="/upload_files" element={<UploadFiles />}/>
+          <Route path="/request" element={<Request />}/>
+        </Route>
       </Routes>
     </>
   );

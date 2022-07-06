@@ -1,38 +1,53 @@
 import React, { useState } from "react";
 import classes from "./Login.module.css";
-import { useDispatch } from "react-redux";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../Firebase/Firebase";
-import { login } from "../../Store/userSlice";
-import { Alert } from "react-bootstrap";
+import axios from "axios";
 import CenteredSpinner from "../../Components/Loading/CenteredSpinner";
 import Navbar from "../../Components/Navigation/Navbar";
+import { Alert } from "react-bootstrap";
+import { BASE_URL, setAdminTokenSession } from "../../Configs/APIAuth";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
+
   const loginHandler = () => {
-    setLoading(true);
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userAuth) => {
-      dispatch(
-        login({
-          username: userAuth.user.displayName,
-          uid: userAuth.user.uid,
-          profilePictureUrl: userAuth.user.photoURL,
-        })
-      );
-      setLoading(false)
-    })
-    .catch((err) => {
-      setError(err.message);
-      setLoading(false);
+    const data = JSON.stringify({
+      email: email,
+      password: password,
     });
-  }
+
+    const config = {
+      method: "post",
+      url: `${BASE_URL}/auth/signin`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+    setError(null);
+    setLoading(true);
+    axios(config)
+      .then((response) => {
+        setLoading(false);
+        setAdminTokenSession(response.data.data.token);
+        console.log(JSON.stringify(response.data));
+        navigate("/");
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.response.status === 401 || error.response.status === 400) {
+          setError(error.response.data.message);
+        } else if (error.response.status === 500) {
+          setError("Email or Password Wrong");
+        } else {
+          setError("Something Went Wrong, Please Try Again Later");
+        }
+      });
+  };
 
   return (
     <>
@@ -47,7 +62,10 @@ function Login() {
                 <div className="d-flex flex-column align-items-center m-5 p-3">
                   <h1 className={`mb-4 ${classes.headingtext}`}>LOGIN ADMIN</h1>
                   <div className="d-flex flex-column">
-                    <label htmlFor="email" className={`form-label mb-2 ${classes.labeltext}`}>
+                    <label
+                      htmlFor="email"
+                      className={`form-label mb-2 ${classes.labeltext}`}
+                    >
                       Your Email
                     </label>
                     <div className="input-group mb-3">
@@ -63,7 +81,10 @@ function Login() {
                     </div>
                   </div>
                   <div className="d-flex flex-column mb-3">
-                    <label htmlFor="password" className={`form-label mb-2 ${classes.labeltext}`}>
+                    <label
+                      htmlFor="password"
+                      className={`form-label mb-2 ${classes.labeltext}`}
+                    >
                       Password
                     </label>
                     <div className="input-group">
@@ -79,44 +100,53 @@ function Login() {
                     </div>
                   </div>
                   <div className="d-flex flex-column mb-3 ">
-                    <div className="form-check" style={{ paddingRight: "260px" }}>
+                    <div
+                      className="form-check"
+                      style={{ paddingRight: "260px" }}
+                    >
                       <input
                         className={`form-check-input ${classes.checkbox}`}
                         type="checkbox"
                         value=""
                         id="flexCheckDefault"
-                        />
-                      <label className={`form-check-label ${classes.labeltext}`} htmlFor="flexCheckDefault">
+                      />
+                      <label
+                        className={`form-check-label ${classes.labeltext}`}
+                        htmlFor="flexCheckDefault"
+                      >
                         Remember Me
                       </label>
                     </div>
                   </div>
-                  {!loading &&
-                    <div className="d-flex flex-column" style={{width: "400px"}}>
+                  {!loading && (
+                    <div
+                      className="d-flex flex-column"
+                      style={{ width: "400px" }}
+                    >
                       {error && <Alert variant="danger">{error}</Alert>}
                     </div>
-                  }
-                  {loading && 
+                  )}
+                  {loading && (
                     <div className="d-flex flex-column mb-3 ">
                       <CenteredSpinner />
                     </div>
-                  }
+                  )}
                   <div className="d-flex flex-column mb-3 ">
                     <button
                       type="button"
                       className={`btn ${classes.buttonreset}`}
                       onClick={loginHandler}
-                      >
+                    >
                       Login
                     </button>
-                  </div>               
+                  </div>
                   <p className={`${classes.smalltext}`}>
                     Forgotten your password?
                     <span>
                       <a
                         className={`nav-link ps-2 ${classes.colorteks} ${classes.smalltext}`}
                         href="/forgot_password"
-                        >
+                      >
                         Reset
                       </a>
                     </span>{" "}
