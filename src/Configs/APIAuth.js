@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 
 export const BASE_URL = "https://capstone-project-4.herokuapp.com/api";
 

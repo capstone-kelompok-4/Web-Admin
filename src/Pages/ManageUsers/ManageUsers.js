@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../../Components/Button/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar';
 import Search from '../../Components/Search/Search';
@@ -18,15 +18,24 @@ function ManageUsers() {
   const [dataPerPage, setDataPerPage] = useState(10);
   const [specialist, setSpecialist] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllUsers().then(res => setUsers(res.data)).catch(err => console.log(err))
   }, [users])
-
+  
   // Get Current Participants
-  const indexOfLastParticipant = currentPage * dataPerPage;
-  const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-  let currentUsers =  users.slice(indexOfFirstParticipant, indexOfLastParticipant);
+
+  if(specialist === ""){
+    const indexOfLastParticipant = currentPage * dataPerPage;
+    const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
+    var currentUsers =  users.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  } else {
+    const indexOfLastParticipant = currentPage * dataPerPage;
+    const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
+    var filtered = users.filter(user => user.specialist.toLowerCase() === specialist.toLowerCase())
+    currentUsers = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  }
   
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -57,6 +66,10 @@ function ManageUsers() {
       year: "numeric",
     }
     return new Date(date).toLocaleString("en-US", options)
+  }
+
+  const handleNavigateEdit = (user_id) => {
+    navigate(`/manage_users/edit_user/${user_id}`)
   }
   return (
     <>
@@ -118,12 +131,6 @@ function ManageUsers() {
                   <tbody>
                     {
                       currentUsers.filter((user) => {
-                        if(specialist === "") {
-                          return user
-                        } else if (user.specialist.toLowerCase() === specialist.toLowerCase()) {
-                          return user
-                        } return false
-                      }).filter((user) => {
                         if(searchTerm === "") {
                           return user
                         } else if (user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -139,8 +146,8 @@ function ManageUsers() {
                             <td>{user.email}</td>
                             <td>{showFormattedDate(user.createdAt)}</td>
                             <td>
-                              <img src={EditIcon} alt="editIcon" style={{marginRight: "10px", cursor: "pointer"}}/>
                               <img src={DeleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}} />
+                              <img src={EditIcon} alt="editIcon" style={{marginLeft: "10px", cursor: "pointer"}} onClick={() => handleNavigateEdit(user.id)}/>
                             </td>
                           </tr>
                         )
@@ -151,10 +158,19 @@ function ManageUsers() {
               </div>
             </div>
           </div>
-          <div className={classes.pagination}>
-            <h6>Showing {currentPage} to {totalPage} of {users.length} entries</h6>
-            <Pagination dataPerPage={dataPerPage} totalData={users.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
-          </div>
+          {
+            specialist === "" ? (
+              <div className={classes.pagination}>
+                <h6>Showing {currentPage} to {totalPage} of {users.length} entries</h6>
+                <Pagination dataPerPage={dataPerPage} totalData={users.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
+              </div>
+            ) : (
+              <div className={classes.pagination}>
+                <h6>Showing {currentPage} to {totalPage} of {filtered.length} entries</h6>
+                <Pagination dataPerPage={dataPerPage} totalData={filtered.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
+              </div>
+            )
+          }
         </div>
       </div>
       <Footer />

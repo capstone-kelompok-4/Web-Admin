@@ -21,9 +21,16 @@ const Request = () => {
   }, [requests])
 
   // Get Current Participants
-  const indexOfLastParticipant = currentPage * dataPerPage;
-  const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-  let currentRequests =  requests.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  if(type === ""){
+    const indexOfLastParticipant = currentPage * dataPerPage;
+    const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
+    var currentRequests =  requests.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  } else {
+    const indexOfLastParticipant = currentPage * dataPerPage;
+    const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
+    var filtered = requests.filter(request => request.requestType.toLowerCase() === type.toLowerCase())
+    currentRequests = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  }
   
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -72,9 +79,8 @@ const Request = () => {
                 <h5>Filter Type</h5>
                 <select name="type" id="type" className={classes.dropdownBtn} value={type} onChange={handleFilterType}>
                   <option value="">Set Type</option>
-                  <option value="pending">Pending</option>
-                  <option value="on Check">On Check</option>
-                  <option value="accepted">Accepted</option>
+                  <option value="course">Course</option>
+                  <option value="training">Training</option>
                 </select>
               </div>
             </div>
@@ -93,12 +99,6 @@ const Request = () => {
                 <tbody>
                   {
                     currentRequests.filter((request) => {
-                      if(type === "") {
-                        return request
-                      } else if (request.status.toLowerCase() === type.toLowerCase()) {
-                        return request
-                      } return false
-                    }).filter((request) => {
                       if(searchTerm === "") {
                         return request
                       } else if (request.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -126,10 +126,19 @@ const Request = () => {
               </table>
             </div>
           </div>
-          <div className={classes.pagination}>
-            <h6>Showing {currentPage} to {totalPage} of {requests.length} entries</h6>
-            <Pagination dataPerPage={dataPerPage} totalData={requests.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
-          </div>
+          {
+            type === "" ? (
+              <div className={classes.pagination}>
+                <h6>Showing {currentPage} to {totalPage} of {requests.length} entries</h6>
+                <Pagination dataPerPage={dataPerPage} totalData={requests.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
+              </div>
+            ) : (
+              <div className={classes.pagination}>
+                <h6>Showing {currentPage} to {totalPage} of {filtered.length} entries</h6>
+                <Pagination dataPerPage={dataPerPage} totalData={filtered.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
+              </div>
+            )
+          }
         </div>
       </div>
       <Footer />

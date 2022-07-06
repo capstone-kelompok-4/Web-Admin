@@ -20,9 +20,16 @@ const DataReports = () => {
   }, [users])
 
   // Get Current Participants
-  const indexOfLastParticipant = currentPage * dataPerPage;
-  const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-  let currentUsers =  users.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  if(specialist === ""){
+    const indexOfLastParticipant = currentPage * dataPerPage;
+    const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
+    var currentUsers =  users.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  } else {
+    const indexOfLastParticipant = currentPage * dataPerPage;
+    const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
+    var filtered = users.filter(user => user.specialist.toLowerCase() === specialist.toLowerCase())
+    currentUsers = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
+  }
   
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -94,12 +101,6 @@ const DataReports = () => {
                 <tbody>
                   {
                     currentUsers.filter((user) => {
-                      if(specialist === "") {
-                        return user
-                      } else if (user.specialist.toLowerCase() === specialist.toLowerCase()) {
-                        return user
-                      } return false
-                    }).filter((user) => {
                       if(searchTerm === "") {
                         return user
                       } else if (user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -123,10 +124,19 @@ const DataReports = () => {
               </table>
             </div>
           </div>
-          <div className={classes.pagination}>
-            <h6>Showing {currentPage} to {totalPage} of {users.length} entries</h6>
-            <Pagination dataPerPage={dataPerPage} totalData={users.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
-          </div>
+          {
+            specialist === "" ? (
+              <div className={classes.pagination}>
+                <h6>Showing {currentPage} to {totalPage} of {users.length} entries</h6>
+                <Pagination dataPerPage={dataPerPage} totalData={users.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
+              </div>
+            ) : (
+              <div className={classes.pagination}>
+                <h6>Showing {currentPage} to {totalPage} of {filtered.length} entries</h6>
+                <Pagination dataPerPage={dataPerPage} totalData={filtered.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
+              </div>
+            )
+          }
         </div>
       </div>
       <Footer />

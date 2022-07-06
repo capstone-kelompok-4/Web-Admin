@@ -19,7 +19,8 @@ function AddUser() {
     zipCode: "",
   }
 
-  const [user, setUser] = useState(initialUserState)
+  const [user, setUser] = useState(initialUserState);
+  const [selectedFile, setSelectedFile] = useState("");
 
   const handleInputChange = (e) => {
     const {name, value, files} = e.target;
@@ -29,8 +30,7 @@ function AddUser() {
         ...user,
         [name]: files[0]
       })
-    } else if (name === "") {
-      
+      setSelectedFile(files[0].name);
     } else {
       console.log(e.target.name," : ",e.target.value);
       setUser({
@@ -78,13 +78,22 @@ function AddUser() {
                 </div>
                 <div className={`col-md-5 col-sm-12 col-lg-5 col-xl-5 ps-2 ${classes.thecontent}`}>
                   <label htmlFor="photoProfile">Photo Profile</label>
-                  <input 
-                    type="file" 
-                    name="photoProfile" 
-                    id="photoProfile"
-                    onChange={handleInputChange} 
-                    accept="image/png, image/jpg, image/gif, image/jpeg" 
-                  />
+                  <label
+                    htmlFor="photoProfile"
+                    style={{ padding: "10px 25px", margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7", display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
+                  > Choose File
+                    <input 
+                      type="file" 
+                      name="photoProfile" 
+                      id="photoProfile"
+                      accept="image/png, image/jpg, image/gif, image/jpeg"
+                      style={{display: "none"}}
+                      onChange={handleInputChange} 
+                    />
+                  </label>
+                  <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
+                    {selectedFile ? selectedFile : "No Chosen File"}
+                  </span>
                 </div>
               </div>
               
