@@ -11,6 +11,15 @@ const EditCourse = () => {
   const { course_id } = useParams();
   const [course, setCourse] = useState({})
 
+  const [methodologyLearning, setMethodologyLearning] = useState({
+    '1 On 1 Session With Mentor': false,
+    'Reading Materials': false,
+    'Video Learning': false,
+    'Quiz': false,
+    'Video Recording': false,
+    'Flexible Learning': false,
+  })
+
   useEffect(() => {
     getCourseByID(course_id).then(res => setCourse(res.data)).catch(err => console.error(err.message));
   }, [course_id])
@@ -35,12 +44,63 @@ const EditCourse = () => {
     console.log(course);
   }
 
+  // Handle Checkbox 
+  const handleChangeOneOnOneSessionWithMentor = () => {
+    setMethodologyLearning({
+      ...methodologyLearning, 
+      '1 On 1 Session With Mentor': !methodologyLearning['1 On 1 Session With Mentor'],
+    })
+    console.log(methodologyLearning);
+  }
+  const handleChangeReadingMaterial = () => {
+    setMethodologyLearning({
+      ...methodologyLearning, 
+      'Reading Materials': !methodologyLearning['Reading Materials'],
+    })
+    console.log(methodologyLearning)
+  }
+  const handleChangeVideoLearning = () => {
+    setMethodologyLearning({
+      ...methodologyLearning, 
+      'Video Learning': !methodologyLearning['Video Learning'],
+    })
+    console.log(methodologyLearning)
+  }
+  const handleChangeQuiz = () => {
+    setMethodologyLearning({
+      ...methodologyLearning, 
+      'Quiz': !methodologyLearning['Quiz'],
+    })
+    console.log(methodologyLearning)
+  }
+  const handleChangeVideoRecording = () => {
+    setMethodologyLearning({
+      ...methodologyLearning, 
+      'Video Recording': !methodologyLearning['Video Recording'],
+    })
+  }
+  const handleChangeFlexibleLearing = () => {
+    setMethodologyLearning({
+      ...methodologyLearning, 
+      'Flexible Learning': !methodologyLearning['Flexible Learning'],
+    })
+  }
+  // Handle Checkbox 
+
   const handlerCancel = (e) => {
     e.preventDefault();
   }
 
   const handlerSubmit = (e) => {
     e.preventDefault()
+    const allKey = Object.keys(methodologyLearning);
+    const listFilterKey = allKey.filter(key => methodologyLearning[key])
+    console.log(listFilterKey);
+
+    setCourse({
+      ...course, 
+      methodology_learning: listFilterKey
+    })
   }
   return (
     <>
@@ -115,19 +175,19 @@ const EditCourse = () => {
               <div className={classes.radioWrapper}>
                 <div className={classes.left}>
                   <div className={`form-check ${classes.formRadio}`}>
-                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton1"  />
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton1" checked={methodologyLearning['1 On 1 Session With Mentor']} onChange={handleChangeOneOnOneSessionWithMentor}/>
                     <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton1">
                       1 on 1 Session With Mentor
                     </label>
                   </div>
                   <div className={`form-check ${classes.formRadio}`}>
-                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton2" />
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton2" checked={methodologyLearning['Reading Materials']} onChange={handleChangeReadingMaterial} />
                     <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton2">
                       Reading Materials
                     </label>
                   </div>
                   <div className={`form-check ${classes.formRadio}`}>
-                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton3" />
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton3" checked={methodologyLearning['Video Learning']} onChange={handleChangeVideoLearning}/>
                     <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton3">
                       Video Learning
                     </label>
@@ -135,19 +195,19 @@ const EditCourse = () => {
                 </div>
                 <div className={classes.right}>
                   <div className={`form-check ${classes.formRadio}`}>
-                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton4"/>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton4" checked={methodologyLearning['Quiz']} onChange={handleChangeQuiz}/>
                     <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton4">
                       Quiz
                     </label>
                   </div>
                   <div className={`form-check ${classes.formRadio}`}>
-                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton5"/>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton5" checked={methodologyLearning['Video Recording']} onChange={handleChangeVideoRecording}/>
                     <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton4">
                       Video Recording
                     </label>
                   </div>
                   <div className={`form-check ${classes.formRadio}`}>
-                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton6"/>
+                    <input className={`form-check-input ${classes.accent}`} type="checkbox" name="methodologyLearning" id="radioButton6" checked={methodologyLearning['Flexible Learning']} onChange={handleChangeFlexibleLearing}/>
                     <label className={`form-check-label ${classes.labelForCheck}`} htmlFor="radioButton4">
                       Flexible Learning
                     </label>
