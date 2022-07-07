@@ -10,6 +10,7 @@ import classes from "./AddCourse.module.css";
 const EditCourse = () => {
   const { course_id } = useParams();
   const [course, setCourse] = useState({})
+  const [selectedFile, setSelectedFile] = useState("");
 
   const [methodologyLearning, setMethodologyLearning] = useState({
     '1 On 1 Session With Mentor': false,
@@ -32,6 +33,7 @@ const EditCourse = () => {
         ...course,
         [name]: files[0]
       })
+      setSelectedFile(files[0].name);
     } else if (name === "methodologyLearning") {
   
     } else {
@@ -89,6 +91,7 @@ const EditCourse = () => {
 
   const handlerCancel = (e) => {
     e.preventDefault();
+    setSelectedFile("");
   }
 
   const handlerSubmit = (e) => {
@@ -133,24 +136,25 @@ const EditCourse = () => {
                 onChange={handleInputChange}
                 placeholder='Set the description of the course'>
               </textarea>
-              <label htmlFor="section">Section</label>
-              <input 
-                type="text"
-                id='sections' 
-                name='sections' 
-                placeholder='e.g 10 section'
-                required
-                value={course.sections} 
-                onChange={handleInputChange}
-              />
+
               <label htmlFor="img">Course Banner</label>
-              <input 
-                type="file" 
-                name="img" 
-                id="img"
-                accept="image/png, image/jpg, image/gif, image/jpeg"
-                onChange={handleInputChange} 
-              />
+              <label
+                htmlFor="img"
+                style={{ padding: "10px 25px",margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7",display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
+              > Choose File
+                <input 
+                  type="file" 
+                  name="img" 
+                  id="img"
+                  accept="image/png, image/jpg, image/gif, image/jpeg"
+                  style={{display: "none"}}
+                  onChange={handleInputChange} 
+                />
+              </label>
+              <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
+                {selectedFile ? selectedFile : "No Chosen File"}
+              </span>
+
               <label htmlFor="target_learner">Target Learner</label>
               <textarea 
                 name="target_learner" 

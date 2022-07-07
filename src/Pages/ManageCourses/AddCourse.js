@@ -9,7 +9,6 @@ const AddCourse = () => {
   const initialCourseState = {
     courseName: "",
     description: "",
-    section: "",
     courseBanner: "",
     targetLearner: "",
     objectiveLearning: "",
@@ -23,7 +22,8 @@ const AddCourse = () => {
     }
   }
 
-  const [course, setCourse] = useState(initialCourseState)
+  const [course, setCourse] = useState(initialCourseState);
+  const [selectedFile, setSelectedFile] = useState("");
 
 
   const handleInputChange = (e) => {
@@ -33,6 +33,7 @@ const AddCourse = () => {
         ...course,
         [name]: files[0]
       })
+      setSelectedFile(files[0].name);
     } else if (name === "methodologyLearning") {
   
     } else {
@@ -103,6 +104,7 @@ const AddCourse = () => {
   const handlerCancel = (e) => {
     e.preventDefault();
     setCourse(initialCourseState);
+    setSelectedFile("");
   }
 
   const handlerSubmit = (e) => {
@@ -150,24 +152,25 @@ const AddCourse = () => {
                 onChange={handleInputChange}
                 placeholder='Set the description of the course'>
               </textarea>
-              <label htmlFor="section">Section</label>
-              <input 
-                type="text"
-                id='section' 
-                name='section' 
-                placeholder='e.g 10 section'
-                required
-                value={course.section} 
-                onChange={handleInputChange}
-              />
+              
               <label htmlFor="courseBanner">Course Banner</label>
-              <input 
-                type="file" 
-                name="courseBanner" 
-                id="courseBanner"
-                onChange={handleInputChange} 
-                accept="image/png, image/jpg, image/gif, image/jpeg" 
-              />
+              <label
+                htmlFor="courseBanner"
+                style={{ padding: "10px 25px", margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7", display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
+              > Choose File
+                <input 
+                  type="file" 
+                  name="courseBanner" 
+                  id="courseBanner"
+                  accept="image/png, image/jpg, image/gif, image/jpeg"
+                  style={{display: "none"}}
+                  onChange={handleInputChange} 
+                />
+              </label>
+              <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
+                {selectedFile ? selectedFile : "No Chosen File"}
+              </span>
+
               <label htmlFor="targetLearner">Target Learner</label>
               <textarea 
                 name="targetLearner" 

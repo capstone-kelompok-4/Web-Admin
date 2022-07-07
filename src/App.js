@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
-import { Outlet, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Dashboard from "./Pages/Dashboard/Dashboard"
 import Login from './Pages/Login/Login';
 import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';
@@ -15,6 +15,7 @@ import UploadFiles from './Pages/Upload/UploadFiles';
 import Request from './Pages/Request/Request';
 import PublicRoute from './Components/PublicRoute/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import Section from './Pages/SectionCourse/Section';
 
 
 function App() {
@@ -32,9 +33,10 @@ function App() {
           <Route path="/manage_courses/edit_course/:course_id" element={<EditCourse/>} />
           <Route path="/manage_users" exact element={<ManageUsers/>} />
           <Route path="/manage_users/add_user" element={<AddUser/>} />
-          <Route path="/manage_users/edit_user/:1" element={<EditUser/>} />
+          <Route path="/manage_users/edit_user/:user_id" element={<EditUser/>} />
           <Route path="/data_reports" element={<DataReports />}/>
           <Route path="/upload_files" element={<UploadFiles />}/>
+          <Route path="/section_courses" element={<Section />}/>
           <Route path="/request" element={<Request />}/>
         </Route>
       </Routes>

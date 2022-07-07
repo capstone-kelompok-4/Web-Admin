@@ -4,7 +4,7 @@ import axios from "axios";
 import CenteredSpinner from "../../Components/Loading/CenteredSpinner";
 import Navbar from "../../Components/Navigation/Navbar";
 import { Alert } from "react-bootstrap";
-import { BASE_URL, setAdminTokenSession } from "../../Configs/APIAuth";
+import { BASE_URL, getToken, setAdminSession, setAdminTokenSession } from "../../Configs/APIAuth";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -34,8 +34,26 @@ function Login() {
       .then((response) => {
         setLoading(false);
         setAdminTokenSession(response.data.data.token);
-        console.log(JSON.stringify(response.data));
-        navigate("/");
+        
+        const token = getToken();
+        var config = {
+          method: 'get',
+          url: `${BASE_URL}/users`,
+          headers: { 
+            'Authorization':`Bearer ${token}`
+          }
+        };
+        axios(config)
+        .then(res => {
+          if(res.data.data.roles[0].name === "ROLE_USER") {
+            setError("Only Role Admin can Login")
+          } else {
+            setAdminSession(res.data.data)
+            navigate("/");
+          }
+        })
+        .catch(err => console.log(err.message))
+
       })
       .catch((error) => {
         setLoading(false);
@@ -121,7 +139,7 @@ function Login() {
                   {!loading && (
                     <div
                       className="d-flex flex-column"
-                      style={{ width: "400px" }}
+                      style={{ width: "400px", fontFamily: "Poppins", textAlign: "center" }}
                     >
                       {error && <Alert variant="danger">{error}</Alert>}
                     </div>

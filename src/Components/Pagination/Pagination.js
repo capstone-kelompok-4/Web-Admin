@@ -24,8 +24,15 @@ function Pagination({ dataPerPage, totalData, paginate, prevPage, nextPage, curr
         }
         {pageNumber.map(number => {
           return(
-            <li key={number} className="page-item">
-              <button onClick={() => paginate(number)} className={`page-link ${classes.pageLink}`} style={{backgroundColor: "transparent", border: "none", color: "#0D2341"}}>{number}</button>
+            <li 
+              key={number} 
+              className="page-item"
+            >
+              <button 
+                onClick={() => paginate(number)} className={`page-link ${classes.pageLink}`} 
+                style={{color: currentPage === number ? "#FF6C00": "#0D2341", border: "none", backgroundColor: currentPage === number ? "#FFE2CC" : "transparent"}}
+              >{number}
+              </button>
             </li>
           )
         })}

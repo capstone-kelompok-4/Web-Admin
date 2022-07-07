@@ -8,11 +8,9 @@ import { useParams } from 'react-router-dom';
 import { getUserByID } from '../../../Configs/MockAPI';
 
 function EditUser() {
-  // const { user_id } = useParams();
-  // const  params  = useParams();
-  const  user_id  = 1;
-  console.log("user id:",user_id)
-  const [user, setUser] = useState({})
+  const { user_id } = useParams();
+  const [user, setUser] = useState({});
+  const [selectedFile, setSelectedFile] = useState('');
 
   useEffect(() => {
     getUserByID(user_id).then(res => setUser(res.data)).catch(err => console.error(err.message));
@@ -26,8 +24,7 @@ function EditUser() {
         ...user,
         [name]: files[0]
       })
-    } else if (name === "") {
-      
+      setSelectedFile(files[0].name)
     } else {
       console.log(e.target.name," : ",e.target.value);
       setUser({
@@ -73,19 +70,28 @@ function EditUser() {
                 </div>
                 <div className={`col-md-5 col-sm-12 col-lg-5 col-xl-5 ps-2 ${classes.thecontent}`}>
                   <label htmlFor="photoProfile">Photo Profile</label>
-                  <input 
-                    type="file" 
-                    name="photoProfile" 
-                    id="photoProfile"
-                    onChange={handleInputChange} 
-                    accept="image/png, image/jpg, image/gif, image/jpeg" 
-                  />
+                  <label
+                    htmlFor="photoProfile"
+                    style={{ padding: "10px 25px", margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7", display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
+                  > Choose File
+                    <input 
+                      type="file" 
+                      name="photoProfile" 
+                      id="photoProfile"
+                      accept="image/png, image/jpg, image/gif, image/jpeg"
+                      style={{display: "none"}}
+                      onChange={handleInputChange} 
+                    />
+                  </label>
+                  <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
+                    {selectedFile ? selectedFile : "No Chosen File"}
+                  </span>
                 </div>
               </div>
               
               <label htmlFor="specialist">Specialist</label>
               <select value={user.specialist} name="specialist" id="specialist" onChange={handleInputChange} required>
-                <option value="" selected hidden>Set Role</option>
+                <option value="" hidden>Set Role</option>
                 <option value="Designer">Designer</option>
                 <option value="Engineer">Engineer</option>
                 <option value="Management">Management</option>
