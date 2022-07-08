@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import Button from '../../Components/Button/Button';
 import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
-import { getCourseByID } from '../../Configs/MockAPI';
+import { BASE_URL, getToken } from '../../Configs/APIAuth';
+import { storage } from '../../Firebase/Firebase';
 import classes from "./AddCourse.module.css";
 
 const EditCourse = () => {
+  const imageRef = useRef();
   const { course_id } = useParams();
   const [course, setCourse] = useState({})
+  const [url, setUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
 
   const [methodologyLearning, setMethodologyLearning] = useState({
@@ -22,28 +27,45 @@ const EditCourse = () => {
   })
 
   useEffect(() => {
-    getCourseByID(course_id).then(res => setCourse(res.data)).catch(err => console.error(err.message));
+    const token = getToken();
+    var config = {
+      method: 'get',
+      url: `${BASE_URL}/courses/${course_id}`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    axios(config).then(res => setCourse(res.data.data)).catch(err => console.log(err));
+
   }, [course_id])
 
 
   const handleInputChange = (e) => {
-    const {name, value, files} = e.target;
-    if(name === "img"){
-      setCourse({
-        ...course,
-        [name]: files[0]
-      })
-      setSelectedFile(files[0].name);
-    } else if (name === "methodologyLearning") {
-  
-    } else {
-      setCourse({
-        ...course,
-        [name]: value
-      })
-    }
+    const {name, value} = e.target;
+    setCourse({
+      ...course,
+      [name]: value
+    })
 
     console.log(course);
+  }
+
+  // Upload image handler
+  const uploadImageHandler = (e) => {
+    const files = imageRef.current.files;
+    const file = files[0];
+    setSelectedFile(file.name);
+    const fileRef = ref(storage, `course-banner/${file.name}`);
+    setSelectedFile(file.name);
+    uploadBytes(fileRef, file)
+      .then(() => {
+        getDownloadURL(fileRef).then((url) => {
+          setUrl(url);
+        });
+      });
+    imageRef.current.files = e.target.files;
+    e.target.files = files;
   }
 
   // Handle Checkbox 
@@ -89,11 +111,13 @@ const EditCourse = () => {
   }
   // Handle Checkbox 
 
+  // Handler Cancel
   const handlerCancel = (e) => {
     e.preventDefault();
     setSelectedFile("");
   }
 
+  // Handler Submit
   const handlerSubmit = (e) => {
     e.preventDefault()
     const allKey = Object.keys(methodologyLearning);
@@ -102,6 +126,8 @@ const EditCourse = () => {
 
     setCourse({
       ...course, 
+      target_learner: course.target_learner.split("\n"),
+      objective_learner: course.objective_learner.split("\n"),
       methodology_learning: listFilterKey
     })
   }
@@ -123,7 +149,7 @@ const EditCourse = () => {
                 name='title' 
                 placeholder='Course Title'
                 required
-                value={course.title} 
+                value={course.name} 
                 onChange={handleInputChange}
                 />
               <label htmlFor="description">Description</label>
@@ -143,12 +169,13 @@ const EditCourse = () => {
                 style={{ padding: "10px 25px",margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7",display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
               > Choose File
                 <input 
+                  ref={imageRef}
                   type="file" 
                   name="img" 
                   id="img"
                   accept="image/png, image/jpg, image/gif, image/jpeg"
                   style={{display: "none"}}
-                  onChange={handleInputChange} 
+                  onChange={uploadImageHandler} 
                 />
               </label>
               <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
@@ -161,7 +188,7 @@ const EditCourse = () => {
                 id="target_learner" 
                 rows="3"
                 required
-                value={course.target_learner}
+                value={course?.target_learner}
                 onChange={handleInputChange}
                 placeholder="Who's the target learner">
               </textarea>

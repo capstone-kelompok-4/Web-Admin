@@ -3,14 +3,32 @@ import CoursesContainer from '../../Components/Course/CoursesContainer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import classes from "./Dashboard.module.css";
-import { getAllCourses } from '../../Configs/MockAPI';
+// import { getAllCourses } from '../../Configs/MockAPI';
 import Footer from '../../Components/Footer/Footer';
+import { BASE_URL, getToken } from '../../Configs/APIAuth';
+import axios from 'axios';
 
 function Dashboard() {
   const [courseData, setCourseData] = useState([]);
-
+  
   useEffect(() => {
-    getAllCourses().then(res => setCourseData(res.data)).catch(err => console.error(err.message));
+    const token = getToken();
+    var config = {
+      method: 'get',
+      url: `${BASE_URL}/courses`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    axios(config)
+    .then(res => {
+      setCourseData(res.data.data);
+    })
+    .catch(err => console.log(err));
+
+
+    // getAllCourses().then(res => setCourseData(res.data)).catch(err => console.error(err.message));
   }, [])
 
   return (

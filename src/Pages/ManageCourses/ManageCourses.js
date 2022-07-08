@@ -7,15 +7,31 @@ import AddIcon from "../../Assets/Icons/addIcon.svg";
 import { Link } from "react-router-dom";
 import Search from '../../Components/Search/Search';
 import CourseCard from '../../Components/Course/CourseCard';
-import { getAllCourses } from '../../Configs/MockAPI';
+// import { getAllCourses } from '../../Configs/MockAPI';
 import Footer from '../../Components/Footer/Footer';
+import { BASE_URL, getToken } from '../../Configs/APIAuth';
+import axios from 'axios';
 
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    getAllCourses().then(res => setCourses(res.data)).catch(err => console.log(err.message));
+    const token = getToken();
+    var config = {
+      method: 'get',
+      url: `${BASE_URL}/courses`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    axios(config)
+    .then(res => {
+      setCourses(res.data.data);
+    })
+    .catch(err => console.log(err));
+    // getAllCourses().then(res => setCourses(res.data)).catch(err => console.log(err.message));
   }, [])
 
   const searchCoursesHandler = (e) => {
@@ -44,7 +60,7 @@ const ManageCourses = () => {
               {courses.filter((course) => {
                 if(searchTerm === ""){
                   return course
-                } else if (course.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+                } else if (course.name.toLowerCase().includes(searchTerm.toLowerCase())) {
                   return course
                 } return false
               }).map((course) => {
@@ -52,11 +68,11 @@ const ManageCourses = () => {
                   <CourseCard
                     key={course.id}
                     course_id={course.id}
-                    title={course.title}
+                    title={course.name}
                     progress={course.progress}
-                    img={course.img}
-                    rating={course.rating}
-                    total_material={course.total_material}
+                    img="http://loremflickr.com/640/480"
+                    rating={course.rate}
+                    total_material={course.sections.length}
                     showInfo={true}
                     showProgressBar={false}
                   />

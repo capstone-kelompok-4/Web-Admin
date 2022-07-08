@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import React, { useRef, useState } from 'react'
 import Button from '../../Components/Button/Button';
 import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
+import { storage } from '../../Firebase/Firebase';
 import classes from "./AddCourse.module.css";
 
 const AddCourse = () => {
@@ -24,24 +26,31 @@ const AddCourse = () => {
 
   const [course, setCourse] = useState(initialCourseState);
   const [selectedFile, setSelectedFile] = useState("");
+  const [url, setUrl] = useState("");
+  const imageRef = useRef();
 
 
   const handleInputChange = (e) => {
-    const {name, value, files} = e.target;
-    if(name === "courseBanner"){
-      setCourse({
-        ...course,
-        [name]: files[0]
-      })
-      setSelectedFile(files[0].name);
-    } else if (name === "methodologyLearning") {
-  
-    } else {
-      setCourse({
-        ...course,
-        [name]: value
-      })
-    }
+    const {name, value} = e.target;
+    setCourse({
+      ...course,
+      [name]: value
+    })
+  }
+
+  const uploadImageHandler = (e) => {
+    const files = imageRef.current.files;
+    const file = files[0];
+    const fileRef = ref(storage, `course-banner/${file.name}`);
+    setSelectedFile(file.name);
+    uploadBytes(fileRef, file)
+      .then(() => {
+        getDownloadURL(fileRef).then((url) => {
+          setUrl(url);
+        });
+      });
+    imageRef.current.files = e.target.files;
+    e.target.files = files;
   }
 
   // Handle Checkbox Methodology Learning
@@ -101,12 +110,14 @@ const AddCourse = () => {
   }
   //  Handle Checkbox Methodology Learning
 
+  // Handle Button Cancel
   const handlerCancel = (e) => {
     e.preventDefault();
     setCourse(initialCourseState);
     setSelectedFile("");
   }
 
+  // Handle Button Submit
   const handlerSubmit = (e) => {
     e.preventDefault()
     const allKey = Object.keys(course.methodologyLearning);
@@ -114,7 +125,8 @@ const AddCourse = () => {
     console.log(listFilterKey);
 
     setCourse({
-      ...course, 
+      ...course,
+      courseBanner: url,
       methodologyLearning: listFilterKey
     })
     
@@ -159,12 +171,13 @@ const AddCourse = () => {
                 style={{ padding: "10px 25px", margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7", display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
               > Choose File
                 <input 
+                  ref={imageRef}
                   type="file" 
                   name="courseBanner" 
                   id="courseBanner"
                   accept="image/png, image/jpg, image/gif, image/jpeg"
                   style={{display: "none"}}
-                  onChange={handleInputChange} 
+                  onChange={uploadImageHandler} 
                 />
               </label>
               <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>

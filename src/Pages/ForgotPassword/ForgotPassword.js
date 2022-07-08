@@ -1,28 +1,16 @@
-import { sendPasswordResetEmail } from 'firebase/auth';
 import React, { useState } from 'react'
-import { Alert } from 'react-bootstrap';
-import CenteredSpinner from '../../Components/Loading/CenteredSpinner';
+// import { Alert } from 'react-bootstrap';
+// import CenteredSpinner from '../../Components/Loading/CenteredSpinner';
 import Navbar from '../../Components/Navigation/Navbar';
-
-import { auth } from '../../Firebase/Firebase';
 import classes from "./ForgotPassword.module.css"
 
 function ForgotPassword() {    
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("") 
-    const [error, setError] = useState("");
-    const [message, setMessage] = useState("");
+    // const [error, setError] = useState("");
+    // const [message, setMessage] = useState("");
     const resetPasswordHandler = () => {
-        setLoading(true);
-        sendPasswordResetEmail(auth, email)
-        .then(() => {
-            setMessage("Password reset email sent!");
-            setLoading(false);
-        })
-        .catch((err) => {
-            setError(err.message);
-            setLoading(false);
-        });
+        
     }
     
   return (
@@ -43,7 +31,7 @@ function ForgotPassword() {
                                         <input type="email" className={`form-control ${classes.forminput}`} id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your Email" required/>
                                     </div>
                                 </div>
-                                {loading && 
+                                {/* {loading && 
                                 <div className="d-flex flex-column mb-3 ">
                                     <CenteredSpinner />
                                 </div>
@@ -53,7 +41,7 @@ function ForgotPassword() {
                                         {error && <Alert variant="danger">{error}</Alert>}
                                         {message && <Alert variant="success">{message}</Alert>}
                                     </div>
-                                }
+                                } */}
                                 <div className="d-flex flex-column mb-3 ">
                                     <button type="button" className={`btn ${classes.buttonreset}`} onClick={resetPasswordHandler}>
                                         Send Reset Link
