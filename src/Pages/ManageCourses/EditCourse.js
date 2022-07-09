@@ -1,110 +1,197 @@
-import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import Button from '../../Components/Button/Button';
 import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
-import { getCourseByID } from '../../Configs/MockAPI';
+import { BASE_URL, getToken } from '../../Configs/APIAuth';
+import { storage } from '../../Firebase/Firebase';
 import classes from "./AddCourse.module.css";
 
 const EditCourse = () => {
+  const imageRef = useRef();
   const { course_id } = useParams();
   const [course, setCourse] = useState({})
+  const [url, setUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
-
+  const [allSpecialization, setAllSpecialization] = useState([]);
+  // const [specialization, setSpecialization] = useState("");
+  console.log(course);
   const [methodologyLearning, setMethodologyLearning] = useState({
-    '1 On 1 Session With Mentor': false,
-    'Reading Materials': false,
-    'Video Learning': false,
-    'Quiz': false,
-    'Video Recording': false,
-    'Flexible Learning': false,
+    0 : false,
+    1 : false,
+    2 : false,
+    3 : false,
+    4 : false,
+    5 : false,
   })
 
   useEffect(() => {
-    getCourseByID(course_id).then(res => setCourse(res.data)).catch(err => console.error(err.message));
+    const token = getToken();
+    var config = {
+      method: 'get',
+      url: `${BASE_URL}/courses/${course_id}`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    axios(config).then(res => {
+      setCourse(res.data.data);
+      setUrl(res.data.data.banner_url)
+    }).catch(err => console.log(err));
+
+    var configGetAllSpecializations = {
+      method: 'get',
+      url: `${BASE_URL}/specializations`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    axios(configGetAllSpecializations).then(res => setAllSpecialization(res.data.data)).catch(err => console.log(err));
+
   }, [course_id])
 
-
   const handleInputChange = (e) => {
-    const {name, value, files} = e.target;
-    if(name === "img"){
-      setCourse({
-        ...course,
-        [name]: files[0]
-      })
-      setSelectedFile(files[0].name);
-    } else if (name === "methodologyLearning") {
-  
-    } else {
-      setCourse({
-        ...course,
-        [name]: value
-      })
-    }
+    const {name, value} = e.target;
+    setCourse({
+      ...course,
+      [name]: value
+    })
+  }
 
-    console.log(course);
+  // handleSpecializationChange
+  const handleSpecializationChange = (e) => {
+    setCourse({
+      ...course,
+      course_specialization: e.target.value
+    })
+  }
+  
+  const handleTargetLearnerChange = (e) => {
+    setCourse({
+      ...course,
+      target_learner: e.target.value
+    })
+  }
+  const handleObjectiveLearnerChange = (e) => {
+    setCourse({
+      ...course,
+      objective_learner: e.target.value
+    })
+  }
+
+  // Upload image handler
+  const uploadImageHandler = (e) => {
+    const files = imageRef.current.files;
+    const file = files[0];
+    setSelectedFile(file.name);
+    const fileRef = ref(storage, `course-banner/${file.name}`);
+    setSelectedFile(file.name);
+    uploadBytes(fileRef, file)
+      .then(() => {
+        getDownloadURL(fileRef).then((url) => {
+          setUrl(url);
+        });
+      });
+    imageRef.current.files = e.target.files;
+    e.target.files = files;
   }
 
   // Handle Checkbox 
   const handleChangeOneOnOneSessionWithMentor = () => {
     setMethodologyLearning({
       ...methodologyLearning, 
-      '1 On 1 Session With Mentor': !methodologyLearning['1 On 1 Session With Mentor'],
+      0: !methodologyLearning[0],
     })
     console.log(methodologyLearning);
   }
   const handleChangeReadingMaterial = () => {
     setMethodologyLearning({
       ...methodologyLearning, 
-      'Reading Materials': !methodologyLearning['Reading Materials'],
+      1: !methodologyLearning[1],
     })
     console.log(methodologyLearning)
   }
   const handleChangeVideoLearning = () => {
     setMethodologyLearning({
       ...methodologyLearning, 
-      'Video Learning': !methodologyLearning['Video Learning'],
+      2: !methodologyLearning[2],
     })
     console.log(methodologyLearning)
   }
   const handleChangeQuiz = () => {
     setMethodologyLearning({
       ...methodologyLearning, 
-      'Quiz': !methodologyLearning['Quiz'],
+      3: !methodologyLearning[3],
     })
     console.log(methodologyLearning)
   }
   const handleChangeVideoRecording = () => {
     setMethodologyLearning({
       ...methodologyLearning, 
-      'Video Recording': !methodologyLearning['Video Recording'],
+      4: !methodologyLearning[4],
     })
   }
   const handleChangeFlexibleLearing = () => {
     setMethodologyLearning({
       ...methodologyLearning, 
-      'Flexible Learning': !methodologyLearning['Flexible Learning'],
+      5: !methodologyLearning[5],
     })
   }
   // Handle Checkbox 
 
+  // Handler Cancel
   const handlerCancel = (e) => {
     e.preventDefault();
     setSelectedFile("");
   }
 
+  // Handler Submit
   const handlerSubmit = (e) => {
     e.preventDefault()
     const allKey = Object.keys(methodologyLearning);
     const listFilterKey = allKey.filter(key => methodologyLearning[key])
-    console.log(listFilterKey);
+    const convertedTargetLearner = course.target_learner.split("\n");
+    const convertedObjectiveLearner = course.objective_learner.split("\n")
 
-    setCourse({
-      ...course, 
-      methodology_learning: listFilterKey
+    var data = JSON.stringify({
+      "name": course.name,
+      "banner_url": url,
+      "description": course.description,
+      "target_learner": convertedTargetLearner,
+      "objective_learner": convertedObjectiveLearner,
+      "methodology_learnings": listFilterKey,
+      "specialization_id": course.course_specialization
     })
+
+    const token = getToken();
+
+    var configEditCourse = {
+      method: 'put',
+      url: `${BASE_URL}/courses/${course_id}`,
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(configEditCourse)
+    .then(res => {
+      Swal.fire(
+        'Success!',
+        'Successfully Update Course!',
+        'success'
+      )
+    })
+    .catch(err => console.log(err));
   }
+
+  // let newTargetLearner = course.target_learner?.join("\n");
+  // let newObjectiveLearner = course?.objective_learner?.join("\n");
   return (
     <>
       <Sidebar activeNow="Manage Courses"/>
@@ -116,14 +203,14 @@ const EditCourse = () => {
             <h3 className={classes.titleForm}>Detail Courses</h3>
             <h6 className={classes.description}>Change or update your personal profile with valid information </h6>
             <form onSubmit={handlerSubmit}>
-              <label htmlFor="title">Course Name</label>
+              <label htmlFor="name">Course Name</label>
               <input 
                 type="text"
-                id='title' 
-                name='title' 
+                id='name' 
+                name='name' 
                 placeholder='Course Title'
                 required
-                value={course.title} 
+                value={course.name} 
                 onChange={handleInputChange}
                 />
               <label htmlFor="description">Description</label>
@@ -143,17 +230,28 @@ const EditCourse = () => {
                 style={{ padding: "10px 25px",margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7",display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
               > Choose File
                 <input 
+                  ref={imageRef}
                   type="file" 
                   name="img" 
                   id="img"
                   accept="image/png, image/jpg, image/gif, image/jpeg"
                   style={{display: "none"}}
-                  onChange={handleInputChange} 
+                  onChange={uploadImageHandler} 
                 />
               </label>
               <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
                 {selectedFile ? selectedFile : "No Chosen File"}
               </span>
+
+              <label htmlFor="specialization">Specialization</label>
+              <select value={course.course_specialization?.id} name="specialization" id="specialization" onChange={handleSpecializationChange} required>
+                <option value="" hidden>Set Specialization</option>
+                {allSpecialization.map(specialization => {
+                  return(
+                    <option key={specialization.id} value={specialization.id}>{specialization.name}</option>
+                  )
+                })}
+              </select>
 
               <label htmlFor="target_learner">Target Learner</label>
               <textarea 
@@ -162,7 +260,7 @@ const EditCourse = () => {
                 rows="3"
                 required
                 value={course.target_learner}
-                onChange={handleInputChange}
+                onChange={handleTargetLearnerChange}
                 placeholder="Who's the target learner">
               </textarea>
               <label htmlFor="objective_learner">Objective Learning</label>
@@ -172,7 +270,7 @@ const EditCourse = () => {
                 rows="4"
                 required
                 value={course.objective_learner}
-                onChange={handleInputChange}
+                onChange={handleObjectiveLearnerChange}
                 placeholder='Description of objective learning for sylabus learner'>
               </textarea>
               <label htmlFor="methodologyLearning">Methodology Learning</label>

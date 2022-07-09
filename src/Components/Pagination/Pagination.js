@@ -17,7 +17,7 @@ function Pagination({ dataPerPage, totalData, paginate, prevPage, nextPage, curr
       <ul className='pagination align-items-center mb-0'>
         { currentPage !== 1 &&
           <li className='page-item'>
-            <button className="page-link" onClick={() => prevPage(currentPage - 1)} style={{backgroundColor: "transparent", border: "none", color: "#0D2341"}}>
+            <button className={`page-link ${classes.pageLink}`} onClick={() => prevPage(currentPage - 1)} style={{backgroundColor: "transparent", border: "none", color: "#0D2341"}}>
               <img src={ChevronLeft} width="20px" height="20px" alt="chevronLeft"/>
             </button>
           </li>
@@ -38,7 +38,7 @@ function Pagination({ dataPerPage, totalData, paginate, prevPage, nextPage, curr
         })}
         { currentPage !== lastPage &&
           <li className='page-item'>
-            <button className="page-link" onClick={() => nextPage(currentPage + 1)} style={{backgroundColor: "transparent", border: "none", color: "#0D2341"}}>
+            <button className={`page-link ${classes.pageLink}`}  onClick={() => nextPage(currentPage + 1)} style={{backgroundColor: "transparent", border: "none", color: "#0D2341"}}>
               <img src={ChevronRight} width="20px" height="20px" alt="chevronRight"/>
             </button>
           </li>

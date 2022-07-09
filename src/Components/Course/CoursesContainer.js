@@ -28,11 +28,11 @@ function CoursesContainer({title, data, showMoreAble, showInfo, showProgressBar}
             <CourseCard 
               key={course.id}
               course_id={course.id}
-              title={course.title}
+              title={course.name}
               progress={course.progress}
-              img={course.img}
-              rating={course.rating}
-              total_material={course.total_material}
+              img={course.banner_url}
+              rating={course.rate}
+              total_material={course.sections.length}
               showInfo={showInfo}
               showProgressBar={showProgressBar}
             />

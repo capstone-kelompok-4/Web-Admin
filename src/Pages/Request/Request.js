@@ -3,11 +3,13 @@ import Header from '../../Components/Header/Header'
 import Sidebar from '../../Components/Navigation/Sidebar'
 import Pagination from '../../Components/Pagination/Pagination'
 import Search from '../../Components/Search/Search'
-import { getAllRequest } from '../../Configs/MockAPI'
 import classes from "./Request.module.css";
 import ChevronRightIcon from "../../Assets/Icons/chevron_right.svg";
+import DefaultProfile from "../../Assets/Images/default-profile.jpg";
 import Button from '../../Components/Button/Button'
 import Footer from '../../Components/Footer/Footer'
+import { BASE_URL, getToken } from '../../Configs/APIAuth'
+import axios from 'axios'
 
 const Request = () => {
   const [requests, setRequests] = useState([]);
@@ -17,8 +19,16 @@ const Request = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    getAllRequest().then(res => setRequests(res.data)).catch(err => console.log(err))
-  }, [requests])
+    const token = getToken();
+    var config = {
+      method: 'get',
+      url: `${BASE_URL}/course-takens`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    axios(config).then(res => setRequests(res.data.data)).catch(err => console.log(err));
+  }, [])
 
   // Get Current Participants
   if(type === ""){
@@ -28,7 +38,7 @@ const Request = () => {
   } else {
     const indexOfLastParticipant = currentPage * dataPerPage;
     const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-    var filtered = requests.filter(request => request.requestType.toLowerCase() === type.toLowerCase())
+    var filtered = requests.filter(request => request.request_type.toLowerCase() === type.toLowerCase())
     currentRequests = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
   }
   
@@ -101,21 +111,37 @@ const Request = () => {
                     currentRequests.filter((request) => {
                       if(searchTerm === "") {
                         return request
-                      } else if (request.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                      } else if (request.user.name.toLowerCase().includes(searchTerm.toLowerCase())) {
                         return request 
                       } return false
                     }).map((request, idx) => {
                       return(
                         <tr key={idx}>
                           <td>{request.id}</td>
-                          <td><img src={request.avatar} alt="avatar" width="50px" style={{borderRadius: "50%", marginRight: "20px"}}/>{request.fullName}</td>
-                          <td>{request.specialist}</td>
-                          <td>{request.email}</td>
-                          <td>{request.requestType}</td>
                           <td>
-                            { request.status === "Pending" && <Button className={classes.btnStatusPending} name={request.status}/> }
-                            { request.status === "On Check" && <Button className={classes.btnStatusOnCheck} name={request.status}/> }
-                            { request.status === "Accepted" && <Button className={classes.btnStatusAccepted} name={request.status}/> }
+                            {
+                              request.user.image_url === "" ? (
+                                <img src={DefaultProfile} alt="avatar" width="50px" style={{borderRadius: "50%", marginRight: "20px"}}/>
+                              ) : (
+                                <img src={request.user.image_url} alt="avatar" width="50px" style={{borderRadius: "50%", marginRight: "20px"}}/>
+                              ) 
+                            }
+                            {request.user.name}
+                          </td>
+                          <td>{request.user.user_specialization.name}</td>
+                          <td>{request.user.username}</td>
+                          {
+                            request.request_type === "COURSE" ? (
+                              <td className={classes.textOrange}>Course</td>
+                              ) : (
+                              <td className={classes.textOrange}>Training</td>
+                            )
+
+                          }
+                          <td>
+                            { request.status === "PENDING" && <Button className={classes.btnStatusPending} name="Pending"/> }
+                            { request.status === "ACCEPTED" && <Button className={classes.btnStatusAccepted} name="Accepted"/> }
+                            { request.status === "REJECTED" && <Button className={classes.btnStatusRejected} name={request.status}/> }
                           </td>
                           <td><img src={ChevronRightIcon} alt="chevronIcon" width="30px" style={{cursor: "pointer"}}/></td>
                         </tr>
