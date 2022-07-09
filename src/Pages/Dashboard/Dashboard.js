@@ -10,26 +10,43 @@ import axios from 'axios';
 
 function Dashboard() {
   const [courseData, setCourseData] = useState([]);
+  const [usersData, setUsersData] = useState([]);
+  const [requestsData, setRequestsData] = useState([]);
   
   useEffect(() => {
     const token = getToken();
-    var config = {
+    var configGetAllCourses = {
       method: 'get',
       url: `${BASE_URL}/courses`,
       headers: { 
         'Authorization': `Bearer ${token}`
       }
     };
-    
-    axios(config)
-    .then(res => {
-      setCourseData(res.data.data);
-    })
-    .catch(err => console.log(err));
+    axios(configGetAllCourses).then(res => setCourseData(res.data.data)).catch(err => console.log(err));
 
+    var configGetAllUsers= {
+      method: 'get',
+      url: `${BASE_URL}/users/all`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    axios(configGetAllUsers).then(res => setUsersData(res.data.data)).catch(err => console.log(err));
+
+    var configGetAllRequests= {
+      method: 'get',
+      url: `${BASE_URL}/course-takens`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    axios(configGetAllRequests).then(res => setRequestsData(res.data.data)).catch(err => console.log(err));
 
     // getAllCourses().then(res => setCourseData(res.data)).catch(err => console.error(err.message));
   }, [])
+
+  // GET ONLY ROLE USER
+  const roleUserData = usersData.filter(user => user.roles[0].name === "ROLE_USER");
 
   return (
     <>
@@ -40,15 +57,15 @@ function Dashboard() {
         <div className={classes.infoWrapper}>
           <div className={classes.wrapper}>
             <p className={classes.title}>Total Users</p>
-            <p className={classes.info}>84</p>
+            <p className={classes.info}>{roleUserData.length}</p>
           </div>
           <div className={classes.wrapper}>
             <p className={classes.title}>Total Courses</p>
-            <p className={classes.info}>12</p>
+            <p className={classes.info}>{courseData.length}</p>
           </div>
           <div className={classes.wrapper}>
             <p className={classes.title}>Total Requests</p>
-            <p className={classes.info}>6</p>
+            <p className={classes.info}>{requestsData.length}</p>
           </div>
         </div>
         <div className={classes.statisticWrapper}>

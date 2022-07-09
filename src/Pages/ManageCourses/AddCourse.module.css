@@ -57,7 +57,15 @@
   font-family: "Poppins", sans-serif;
   margin: 1rem 0;
 }
-
+.containerForm > form > select{
+  width: 30%;
+  padding: 20px;
+  border: 1px solid #0D2341;
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  margin: 1rem 0;
+}
 .containerForm > form > input[type=file]{
   border: none;
   padding: 20px 0;

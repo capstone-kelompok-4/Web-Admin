@@ -13,7 +13,13 @@ function CourseCard({course_id, title, img, progress, rating, total_material, sh
   return (
     <div className={`col p-0 ${classes.parent}`}>
       <div className={`card h-100 m-auto ${classes.singleCard}`}>
-        <img src={img} className="card-img-top" alt="courseCardImg" width="250px" height="150px" style={{padding: "15px 15px 0 15px", borderRadius: "20px 20px 0 0"}}/>
+        {
+          img === "" || img === null ? (
+            <img src="https://firebasestorage.googleapis.com/v0/b/capstone-project-alterra.appspot.com/o/course-banner%2FWoman%20debugging%20a%20program.png?alt=media&token=4d64524b-894e-4dc1-9632-49db764a7622" className="card-img-top" alt="courseCardImg" width="250px" height="150px" style={{padding: "15px 15px 0 15px", borderRadius: "20px 20px 0 0"}}/>
+            ) : (
+            <img src={img} className="card-img-top" alt="courseCardImg" width="250px" height="150px" style={{padding: "15px 15px 0 15px", borderRadius: "20px 20px 0 0"}}/>
+          )
+        }
         <div className="card-body text-start h-100">
           <h5 className={classes.cardTitle} onClick={handleClick}>{title}</h5> 
         </div>

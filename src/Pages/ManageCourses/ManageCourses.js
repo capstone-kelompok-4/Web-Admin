@@ -70,7 +70,7 @@ const ManageCourses = () => {
                     course_id={course.id}
                     title={course.name}
                     progress={course.progress}
-                    img="http://loremflickr.com/640/480"
+                    img={course.banner_url}
                     rating={course.rate}
                     total_material={course.sections.length}
                     showInfo={true}

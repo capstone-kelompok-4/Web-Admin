@@ -1,13 +1,31 @@
+import axios from 'axios';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import Swal from 'sweetalert2';
 import Button from '../../Components/Button/Button';
 import Footer from '../../Components/Footer/Footer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
+import { BASE_URL, getToken } from '../../Configs/APIAuth';
 import { storage } from '../../Firebase/Firebase';
 import classes from "./AddCourse.module.css";
 
 const AddCourse = () => {
+
+  useEffect(() => {
+    const token = getToken();
+    var configGetAllSpecializations = {
+      method: 'get',
+      url: `${BASE_URL}/specializations`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    axios(configGetAllSpecializations).then(res => setAllSpecialization(res.data.data)).catch(err => console.log(err));
+
+  }, [])
+
   const initialCourseState = {
     courseName: "",
     description: "",
@@ -15,16 +33,19 @@ const AddCourse = () => {
     targetLearner: "",
     objectiveLearning: "",
     methodologyLearning: {
-      '1 On 1 Session With Mentor': false,
-      'Reading Material': false,
-      'Video Learning': false,
-      'Quiz': false,
-      'Video Recording': false,
-      'Flexible Learning': false,
+      0: false,
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+      5: false,
     }
   }
 
   const [course, setCourse] = useState(initialCourseState);
+  const [allSpecialization, setAllSpecialization] = useState([]);
+  const [specialization, setSpecialization] = useState("");
+  console.log(specialization);
   const [selectedFile, setSelectedFile] = useState("");
   const [url, setUrl] = useState("");
   const imageRef = useRef();
@@ -38,6 +59,11 @@ const AddCourse = () => {
     })
   }
 
+  // handleSpecializationChange
+  const handleSpecializationChange = (e) => {
+    setSpecialization(e.target.value)
+  }
+
   const uploadImageHandler = (e) => {
     const files = imageRef.current.files;
     const file = files[0];
@@ -48,6 +74,10 @@ const AddCourse = () => {
         getDownloadURL(fileRef).then((url) => {
           setUrl(url);
         });
+        setCourse({
+          ...course, 
+          courseBanner: url
+        })
       });
     imageRef.current.files = e.target.files;
     e.target.files = files;
@@ -59,7 +89,7 @@ const AddCourse = () => {
       ...course, 
       methodologyLearning: {
         ...course.methodologyLearning, 
-        '1 On 1 Session With Mentor': !course.methodologyLearning.oneOnOneSessionWithMentor
+        0: !course.methodologyLearning.oneOnOneSessionWithMentor
       }
     })
   }
@@ -68,7 +98,7 @@ const AddCourse = () => {
       ...course, 
       methodologyLearning: {
         ...course.methodologyLearning,
-        'Reading Material': !course.methodologyLearning.readingMaterial
+        1: !course.methodologyLearning.readingMaterial
       },
     })
   }
@@ -77,7 +107,7 @@ const AddCourse = () => {
       ...course, 
       methodologyLearning: {
         ...course.methodologyLearning,
-       'Video Learning': !course.methodologyLearning.videoLearning,
+       2: !course.methodologyLearning.videoLearning,
       },
     })
   }
@@ -86,7 +116,7 @@ const AddCourse = () => {
       ...course, 
       methodologyLearning: {
         ...course.methodologyLearning,
-        'Quiz': !course.methodologyLearning.quiz,
+        3: !course.methodologyLearning.quiz,
       },
     })
   }
@@ -95,7 +125,7 @@ const AddCourse = () => {
       ...course, 
       methodologyLearning: {
         ...course.methodologyLearning,
-        'Video Recording': !course.methodologyLearning.videoRecording,
+        4: !course.methodologyLearning.videoRecording,
       },
     })
   }
@@ -104,7 +134,7 @@ const AddCourse = () => {
       ...course, 
       methodologyLearning: {
         ...course.methodologyLearning,
-        'Flexible Learning': !course.methodologyLearning.flexibleLearning
+        5: !course.methodologyLearning.flexibleLearning
       },
     })
   }
@@ -122,15 +152,38 @@ const AddCourse = () => {
     e.preventDefault()
     const allKey = Object.keys(course.methodologyLearning);
     const listFilterKey = allKey.filter(key => course.methodologyLearning[key])
-    console.log(listFilterKey);
+    const convertedTargetLearner = course.targetLearner.split("\n")
+    const convertedObjectiveLearner = course.targetLearner.split("\n")
 
-    setCourse({
-      ...course,
-      courseBanner: url,
-      methodologyLearning: listFilterKey
+    var data = JSON.stringify({
+      "name": course.courseName,
+      "banner_url": url,
+      "description": course.description,
+      "target_learner": convertedTargetLearner,
+      "objective_learner": convertedObjectiveLearner,
+      "methodology_learnings": listFilterKey,
+      "specialization_id": specialization
     })
+    const token = getToken();
+    var configAddCourse = {
+      method: 'post',
+      url: `${BASE_URL}/courses`,
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
     
-    console.log(course);
+    axios(configAddCourse)
+    .then(res => {
+      Swal.fire(
+        'Success!',
+        'Successfully Added Course!',
+        'success'
+      )
+    })
+    .catch(err => console.log(err));
   }
 
   return (
@@ -183,6 +236,16 @@ const AddCourse = () => {
               <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
                 {selectedFile ? selectedFile : "No Chosen File"}
               </span>
+
+              <label htmlFor="specialization">Specialization</label>
+              <select value={specialization} name="specialization" id="specialization" onChange={handleSpecializationChange} required>
+                <option value="" hidden>Set Specialization</option>
+                {allSpecialization.map(specialization => {
+                  return(
+                    <option key={specialization.id} value={specialization.id}>{specialization.name}</option>
+                  )
+                })}
+              </select>
 
               <label htmlFor="targetLearner">Target Learner</label>
               <textarea 
