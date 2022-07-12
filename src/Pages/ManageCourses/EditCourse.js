@@ -19,7 +19,7 @@ const EditCourse = () => {
   const [selectedFile, setSelectedFile] = useState("");
   const [allSpecialization, setAllSpecialization] = useState([]);
   // const [specialization, setSpecialization] = useState("");
-  console.log(course);
+  console.log(course.course_specialization);
   const [methodologyLearning, setMethodologyLearning] = useState({
     0 : false,
     1 : false,
@@ -154,8 +154,8 @@ const EditCourse = () => {
     e.preventDefault()
     const allKey = Object.keys(methodologyLearning);
     const listFilterKey = allKey.filter(key => methodologyLearning[key])
-    const convertedTargetLearner = course.target_learner.split("\n");
-    const convertedObjectiveLearner = course.objective_learner.split("\n")
+    const convertedTargetLearner = course.target_learner?.split("\n");
+    const convertedObjectiveLearner = course.objective_learner?.split("\n")
 
     var data = JSON.stringify({
       "name": course.name,
@@ -180,14 +180,22 @@ const EditCourse = () => {
     };
     
     axios(configEditCourse)
-    .then(res => {
+    .then(() => {
       Swal.fire(
         'Success!',
         'Successfully Update Course!',
         'success'
       )
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      if (err.response){
+        console.log(err.response)
+      }else if(err.request){
+        console.log(err.request)
+      }else if(err.message){
+        console.log(err.message)
+      }
+    });
   }
 
   // let newTargetLearner = course.target_learner?.join("\n");
