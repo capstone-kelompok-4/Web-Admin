@@ -57,7 +57,9 @@ const Sidebar = ({activeNow}) => {
     <>
       <div className={classes.container}>
         <div className={classes.logo}>
-          <img src={AlterraLogo} alt="logo"/>
+          <Link to="/">
+            <img src={AlterraLogo} alt="logo"/>
+          </Link>
         </div>
         {
           sidebarItems.map((item, idx) => {

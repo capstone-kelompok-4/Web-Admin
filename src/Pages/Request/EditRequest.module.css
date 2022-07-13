@@ -1,0 +1,81 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+  width: 80%;
+}
+
+.containerContent {
+  background-color: #F0F5FD;
+  padding: 3rem 3rem 6rem 3rem;
+}
+
+.containerContent h3{
+  color: #0D2341;
+  font-family: "Mulish";
+  font-weight: bold;
+}
+
+.editRequest{
+  padding: 3rem;
+  background-color: #FFF;
+  width: 100%;
+  border-radius: 20px;
+  margin: 3rem 0;
+}
+
+.editRequest > .titleForm {
+  color: #0D2341;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+}
+
+.editRequest > .description {
+  color: #0D2341;
+  opacity: .5;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+}
+
+.editRequest > form {
+  margin: 2rem 0;
+}
+
+.editRequest > form > label {
+  display: block;
+  font-family: "Poppins", sans-serif;
+  color: #0D2341;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.editRequest > form > input, .editRequest > form > select{
+  width: 60%;
+  padding: 20px;
+  border: 1px solid #0D2341;
+  border-radius: 10px;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  margin: 1rem 0;
+}
+.editRequest > form > input[name='specialization'], .editRequest > form > input[name="requestType"], .editRequest > form > select[name="status"]{
+  width: 25%;
+}
+
+.buttonWrapper {
+  display: flex;
+  column-gap: 20px;
+  margin-top: 40px;
+}
+
+.btnSave{
+  padding: 15px 40px;
+  background-color: #FF6C00;
+  color: #FFF;
+  border: none;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+
+}

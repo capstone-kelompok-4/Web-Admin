@@ -3,17 +3,19 @@ import CoursesContainer from '../../Components/Course/CoursesContainer';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import classes from "./Dashboard.module.css";
-// import { getAllCourses } from '../../Configs/MockAPI';
 import Footer from '../../Components/Footer/Footer';
 import { BASE_URL, getToken } from '../../Configs/APIAuth';
 import axios from 'axios';
+import Chart from "./Chart.js";
 
 function Dashboard() {
   const [courseData, setCourseData] = useState([]);
   const [usersData, setUsersData] = useState([]);
   const [requestsData, setRequestsData] = useState([]);
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
+    setLoading(true);
     const token = getToken();
     var configGetAllCourses = {
       method: 'get',
@@ -22,7 +24,10 @@ function Dashboard() {
         'Authorization': `Bearer ${token}`
       }
     };
-    axios(configGetAllCourses).then(res => setCourseData(res.data.data)).catch(err => console.log(err));
+    axios(configGetAllCourses).then(res => {
+      setLoading(false);
+      setCourseData(res.data.data);
+    }).catch(err => console.log(err));
 
     var configGetAllUsers= {
       method: 'get',
@@ -41,8 +46,6 @@ function Dashboard() {
       }
     };
     axios(configGetAllRequests).then(res => setRequestsData(res.data.data)).catch(err => console.log(err));
-
-    // getAllCourses().then(res => setCourseData(res.data)).catch(err => console.error(err.message));
   }, [])
 
   // GET ONLY ROLE USER
@@ -72,6 +75,7 @@ function Dashboard() {
           <div className={classes.left}>
             <div className={classes.statistics}>
               <p className={classes.title}>Access Statistics</p>
+              <Chart />
             </div>
           </div>
           <div className={classes.right}>
@@ -80,7 +84,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <CoursesContainer title="Manage Courses" data={courseData} showInfo={true} showProgressBar={false} showMoreAble={true}/>
+        <CoursesContainer title="Manage Courses" data={courseData} showInfo={true} showProgressBar={false} showMoreAble={true} loading={loading}/>
        </div>
       </div>
       <Footer />

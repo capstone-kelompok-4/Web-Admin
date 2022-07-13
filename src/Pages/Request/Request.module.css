@@ -151,3 +151,10 @@
   color: #FF6C00 !important;
   font-weight: 600 !important;
 }
+
+.spinnerContain{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
