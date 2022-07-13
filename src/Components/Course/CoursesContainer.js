@@ -1,8 +1,9 @@
+import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react'
 import CourseCard from './CourseCard';
 import classes from "./CoursesContainer.module.css"; 
 
-function CoursesContainer({title, data, showMoreAble, showInfo, showProgressBar}) {
+function CoursesContainer({title, data, showMoreAble, showInfo, showProgressBar, loading}) {
   const [limit, setLimit] = useState(8);
     const [isReadMoreShown, setIsReadMoreShown] =useState(false);
     const handleReadMoreClick =()=>{
@@ -23,7 +24,13 @@ function CoursesContainer({title, data, showMoreAble, showInfo, showProgressBar}
         } 
       </div>
       <div className="row row-cols-1 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 g-5 my-0 ">
-        {data.slice(0, limit? limit : data.length).map((course) => {
+        {
+          loading && 
+          <div className={classes.spinnerContain}>
+            <CircularProgress style={{ width: "200px", height: "200px", color: "#FF6C00" }} />
+          </div>
+        }
+        { !loading && data.slice(0, limit? limit : data.length).map((course) => {
           return(
             <CourseCard 
               key={course.id}

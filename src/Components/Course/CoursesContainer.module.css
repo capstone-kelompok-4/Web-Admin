@@ -27,6 +27,14 @@
   margin: 20px 0;
 }
 
+.spinnerContain{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+
 @media screen and (max-width: 1750px) {
   .grid{
     grid-template-columns: repeat(3, 1fr);

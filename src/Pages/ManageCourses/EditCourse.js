@@ -18,8 +18,7 @@ const EditCourse = () => {
   const [url, setUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [allSpecialization, setAllSpecialization] = useState([]);
-  // const [specialization, setSpecialization] = useState("");
-  console.log(course.course_specialization);
+  console.log(course);
   const [methodologyLearning, setMethodologyLearning] = useState({
     0 : false,
     1 : false,
@@ -164,7 +163,7 @@ const EditCourse = () => {
       "target_learner": convertedTargetLearner,
       "objective_learner": convertedObjectiveLearner,
       "methodology_learnings": listFilterKey,
-      "specialization_id": course.course_specialization
+      "specialization_id": course.course_specialization.id
     })
 
     const token = getToken();
@@ -209,7 +208,7 @@ const EditCourse = () => {
           <h2 className={classes.title}>Edit Courses</h2>
           <div className={classes.containerForm}>
             <h3 className={classes.titleForm}>Detail Courses</h3>
-            <h6 className={classes.description}>Change or update your personal profile with valid information </h6>
+            <h6 className={classes.description}>Change or update detail course with valid information </h6>
             <form onSubmit={handlerSubmit}>
               <label htmlFor="name">Course Name</label>
               <input 

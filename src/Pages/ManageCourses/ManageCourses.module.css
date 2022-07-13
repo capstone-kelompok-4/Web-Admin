@@ -81,3 +81,11 @@
   outline: none;
 }
 /* Search Bar */
+
+/* Loading */
+.spinnerContain{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}

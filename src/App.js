@@ -16,6 +16,7 @@ import Request from './Pages/Request/Request';
 import PublicRoute from './Components/PublicRoute/PublicRoute';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import Section from './Pages/SectionCourse/Section';
+import EditRequest from './Pages/Request/EditRequest';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path="/upload_files" element={<UploadFiles />}/>
           <Route path="/section_courses" element={<Section />}/>
           <Route path="/request" element={<Request />}/>
+          <Route path="/request/:id" element={<EditRequest />}/>
         </Route>
       </Routes>
     </>

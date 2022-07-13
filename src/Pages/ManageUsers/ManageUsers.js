@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { CircularProgress } from '@mui/material';
 import Button from '../../Components/Button/Button';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar';
@@ -14,7 +14,6 @@ import AddIcon from "../../Assets/Icons/addIcon.svg";
 import DeleteIcon from "../../Assets/Icons/delete_icon.svg";
 import EditIcon from "../../Assets/Icons/edit_icon.svg";
 import DefaultProfile from "../../Assets/Images/default-profile.jpg";
-// import { getAllUsers } from '../../Configs/MockAPI';
 import { BASE_URL, getToken } from '../../Configs/APIAuth';
 import Swal from 'sweetalert2';
 
@@ -25,15 +24,15 @@ function ManageUsers() {
   const [dataPerPage, setDataPerPage] = useState(10);
   const [specialist, setSpecialist] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     getAllUsers();
-    // getAllUsers().then(res => setUsers(res.data)).catch(err => console.log(err))
-    // getAllCourses().then(res => setCourses(res.data)).catch(err => console.log(err.message));
   }, [])
 
   const getAllUsers = () => {
+    setLoading(true);
     const token = getToken();
     var config = {
       method: 'get',
@@ -45,21 +44,26 @@ function ManageUsers() {
     
     axios(config)
     .then(res => {
+      setLoading(false);
       setUsers(res.data.data);
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      setLoading(false);
+      console.log(err)
+    });
   }
+
+  const onlyRoleUser = users.filter(user => user.roles[0].name === 'ROLE_USER');
   
   // Get Current Participants
-
   if(specialist === ""){
     const indexOfLastParticipant = currentPage * dataPerPage;
     const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-    var currentUsers =  users.slice(indexOfFirstParticipant, indexOfLastParticipant);
+    var currentUsers =  onlyRoleUser.slice(indexOfFirstParticipant, indexOfLastParticipant);
   } else {
     const indexOfLastParticipant = currentPage * dataPerPage;
     const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-    var filtered = users.filter(user => user.specialist.toLowerCase() === specialist.toLowerCase())
+    var filtered = onlyRoleUser.filter(user => user?.user_specialization?.name.toLowerCase() === specialist.toLowerCase())
     currentUsers = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
   }
   
@@ -148,22 +152,19 @@ function ManageUsers() {
                   <div className='d-grid gap-4' style={{fontFamily: "Poppins"}}>
                     <h5 className='mb-0'>Show 
                     <select name="entries" id="entries" className={classes.dropdownBtn} value={dataPerPage} onChange={handleShowEntries}>
-                      <option value="10">10</option>
-                      <option value="9">9</option>
-                      <option value="8">8</option>
-                      <option value="7">7</option>
-                      <option value="6">6</option>
+                      <option value="3">3</option>
                       <option value="5">5</option>
+                      <option value="7">7</option>
                     </select>
                      entries</h5>
                     <div className='d-flex align-items-center'>
                       <h5 className='m-0'>Filter Specialization</h5>
                       <select name="role" id="role" className={classes.dropdownBtn} value={specialist} onChange={handleFilterSpecialist}>
                         <option value="">Set Role</option>
-                        <option value="designer">Designer</option>
-                        <option value="management">Management</option>
-                        <option value="engineer">Engineer</option>
-                        <option value="manager">Manager</option>
+                        <option value="frontend developer">Frontend Developer</option>
+                        <option value="backend developer">Backend Developer</option>
+                        <option value="quality engineer">Quality Engineer</option>
+                        <option value="ui/ux designer">UI/UX Designer</option>
                       </select>
                     </div>
                   </div>
@@ -176,53 +177,61 @@ function ManageUsers() {
                 </div>
               </div>
               <div className={classes.table}>
-                <table>
-                  <thead>
-                    <tr>
-                      <td>#</td>
-                      <td width="5%">Roll No.</td>
-                      <td>Full Name</td>
-                      <td>Specialist</td>
-                      <td width="25%">Email</td>
-                      <td  width="15%">Admission Date</td>
-                      <td>Action</td>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {
-                      users.filter((user) => {
-                        if(searchTerm === "") {
-                          return user
-                        } else if (user.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-                          return user 
-                        } return false
-                      }).map((user, idx) => {
-                        return(
-                          <tr key={idx}>
-                            <td>
-                                {
-                                    user?.image_url === "" || user?.image_url === null ? (
-                                        <img src={DefaultProfile} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
-                                    ) : (
-                                        <img src={user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
-                                    )
-                                }
-                            </td>
-                            <td>&emsp;{idx+1}</td>
-                            <td>{user?.name}</td>
-                            <td>{user?.user_specialization?.name}</td>
-                            <td>{user?.username}</td>
-                            <td>{showFormattedDate(user.created_at)}</td>
-                            <td>
-                              <img src={DeleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}} onClick={() => handleDeleteUser(user.id)}/>
-                              <img src={EditIcon} alt="editIcon" style={{marginLeft: "10px", cursor: "pointer"}} onClick={() => handleNavigateEdit(user.id)}/>
-                            </td>
-                          </tr>
-                        )
-                      })
-                    }
-                  </tbody>
-                </table>
+                {
+                  loading ? (
+                    <div className={classes.spinnerContain}>
+                      <CircularProgress style={{ width: "200px", height: "200px", color: "#FF6C00" }} />
+                    </div>
+                  ) : (
+                    <table>
+                      <thead>
+                        <tr>
+                          <td>#</td>
+                          <td width="5%">Roll No.</td>
+                          <td>Full Name</td>
+                          <td>Specialist</td>
+                          <td width="25%">Email</td>
+                          <td  width="15%">Admission Date</td>
+                          <td>Action</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          currentUsers.filter((user) => {
+                            if(searchTerm === "") {
+                              return user
+                            } else if (user.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+                              return user 
+                            } return false
+                          }).map((user, idx) => {
+                            return(
+                              <tr key={idx}>
+                                <td>
+                                    {
+                                        user?.image_url === "" || user?.image_url === null ? (
+                                            <img src={DefaultProfile} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                        ) : (
+                                            <img src={user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                        )
+                                    }
+                                </td>
+                                <td>&emsp;{idx+1}</td>
+                                <td>{user?.name}</td>
+                                <td>{user?.user_specialization?.name}</td>
+                                <td>{user?.username}</td>
+                                <td>{showFormattedDate(user.created_at)}</td>
+                                <td>
+                                  <img src={DeleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}} onClick={() => handleDeleteUser(user.id)}/>
+                                  <img src={EditIcon} alt="editIcon" style={{marginLeft: "10px", cursor: "pointer"}} onClick={() => handleNavigateEdit(user.id)}/>
+                                </td>
+                              </tr>
+                            )
+                          })
+                        }
+                      </tbody>
+                    </table>
+                  )
+                }
               </div>
             </div>
           </div>
