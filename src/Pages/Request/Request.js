@@ -117,7 +117,7 @@ const Request = () => {
                     }).map((request, idx) => {
                       return(
                         <tr key={idx}>
-                          <td>{request.id}</td>
+                          <td>{idx+1}</td>
                           <td>
                             {
                               request.user.image_url === "" ? (

@@ -7,7 +7,6 @@ import AddIcon from "../../Assets/Icons/addIcon.svg";
 import { Link } from "react-router-dom";
 import Search from '../../Components/Search/Search';
 import CourseCard from '../../Components/Course/CourseCard';
-// import { getAllCourses } from '../../Configs/MockAPI';
 import Footer from '../../Components/Footer/Footer';
 import { BASE_URL, getToken } from '../../Configs/APIAuth';
 import axios from 'axios';
@@ -31,7 +30,6 @@ const ManageCourses = () => {
       setCourses(res.data.data);
     })
     .catch(err => console.log(err));
-    // getAllCourses().then(res => setCourses(res.data)).catch(err => console.log(err.message));
   }, [])
 
   const searchCoursesHandler = (e) => {
