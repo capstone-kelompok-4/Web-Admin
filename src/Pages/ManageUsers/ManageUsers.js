@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import Button from '../../Components/Button/Button';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+
+import Button from '../../Components/Button/Button';
 import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar';
 import Search from '../../Components/Search/Search';
 import classes from "./ManageUsers.module.css";
-import AddIcon from "../../Assets/Icons/addIcon.svg";
 import Footer from "../../Components/Footer/Footer"
-import { getAllUsers } from '../../Configs/MockAPI';
 import Pagination from '../../Components/Pagination/Pagination';
+
+import AddIcon from "../../Assets/Icons/addIcon.svg";
 import DeleteIcon from "../../Assets/Icons/delete_icon.svg";
 import EditIcon from "../../Assets/Icons/edit_icon.svg";
+import DefaultProfile from "../../Assets/Images/default-profile.jpg";
+// import { getAllUsers } from '../../Configs/MockAPI';
+import { BASE_URL, getToken } from '../../Configs/APIAuth';
+import Swal from 'sweetalert2';
+
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -21,8 +28,27 @@ function ManageUsers() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllUsers().then(res => setUsers(res.data)).catch(err => console.log(err))
-  }, [users])
+    getAllUsers();
+    // getAllUsers().then(res => setUsers(res.data)).catch(err => console.log(err))
+    // getAllCourses().then(res => setCourses(res.data)).catch(err => console.log(err.message));
+  }, [])
+
+  const getAllUsers = () => {
+    const token = getToken();
+    var config = {
+      method: 'get',
+      url: `${BASE_URL}/users/all`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    axios(config)
+    .then(res => {
+      setUsers(res.data.data);
+    })
+    .catch(err => console.log(err));
+  }
   
   // Get Current Participants
 
@@ -71,6 +97,40 @@ function ManageUsers() {
   const handleNavigateEdit = (user_id) => {
     navigate(`/manage_users/edit_user/${user_id}`)
   }
+
+  const handleDeleteUser = (user_id) => {
+    const token = getToken();
+    var configDeleteSection = {
+      method: 'delete',
+      url: `${BASE_URL}/users/${user_id}`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios(configDeleteSection).then(res => {
+          console.log(res.data)
+          getAllUsers();
+        }).catch(err => console.log(err))
+        Swal.fire(
+          'Deleted!',
+          'User data has been deleted.',
+          'success'
+        )
+      }
+    })
+  }
+
   return (
     <>
       <Sidebar activeNow="Manage Users"/>
@@ -130,23 +190,31 @@ function ManageUsers() {
                   </thead>
                   <tbody>
                     {
-                      currentUsers.filter((user) => {
+                      users.filter((user) => {
                         if(searchTerm === "") {
                           return user
-                        } else if (user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        } else if (user.name.toLowerCase().includes(searchTerm.toLowerCase())) {
                           return user 
                         } return false
                       }).map((user, idx) => {
                         return(
                           <tr key={idx}>
-                            <td><img src={user.avatar} alt="avatar" width="50px" style={{borderRadius: "50%"}}/></td>
-                            <td>{user.id}</td>
-                            <td>{user.fullName}</td>
-                            <td>{user.specialist}</td>
-                            <td>{user.email}</td>
-                            <td>{showFormattedDate(user.createdAt)}</td>
                             <td>
-                              <img src={DeleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}} />
+                                {
+                                    user?.image_url === "" || user?.image_url === null ? (
+                                        <img src={DefaultProfile} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                    ) : (
+                                        <img src={user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                    )
+                                }
+                            </td>
+                            <td>&emsp;{idx+1}</td>
+                            <td>{user?.name}</td>
+                            <td>{user?.user_specialization?.name}</td>
+                            <td>{user?.username}</td>
+                            <td>{showFormattedDate(user.created_at)}</td>
+                            <td>
+                              <img src={DeleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}} onClick={() => handleDeleteUser(user.id)}/>
                               <img src={EditIcon} alt="editIcon" style={{marginLeft: "10px", cursor: "pointer"}} onClick={() => handleNavigateEdit(user.id)}/>
                             </td>
                           </tr>

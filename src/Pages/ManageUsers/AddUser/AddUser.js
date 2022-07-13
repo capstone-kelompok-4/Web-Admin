@@ -1,16 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import classes from "./AddUser.module.css";
 import Button from '../../../Components/Button/Button'
 import Header from '../../../Components/Header/Header'
 import Sidebar from '../../../Components/Navigation/Sidebar'
 import Footer from '../../../Components/Footer/Footer';
+import { BASE_URL, getToken } from '../../../Configs/APIAuth';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../../Firebase/Firebase';
 
 function AddUser() {
+  useEffect(() => {
+    const token = getToken();
+    var configGetAllSpecializations = {
+      method: 'get',
+      url: `${BASE_URL}/specializations`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    axios(configGetAllSpecializations).then(res => setAllSpecialization(res.data.data)).catch(err => console.log(err));
+
+  }, [])
+
   const initialUserState = {
     fullName: "",
     photoProfile: "",
-    specialist: "",
     email: "",
+    password: "",
     phoneNumber: "",
     detailAddress: "",
     country: "",
@@ -20,36 +39,95 @@ function AddUser() {
   }
 
   const [user, setUser] = useState(initialUserState);
+  const [allSpecialization, setAllSpecialization] = useState([]);
   const [selectedFile, setSelectedFile] = useState("");
+  const [specialization, setSpecialization] = useState("");
+  console.log(specialization);
+  const [url, setUrl] = useState("");
+  console.log(url);
+  const imageRef = useRef();
 
   const handleInputChange = (e) => {
-    const {name, value, files} = e.target;
-    
-    if(name === "photoProfile"){
-      setUser({
-        ...user,
-        [name]: files[0]
-      })
-      setSelectedFile(files[0].name);
-    } else {
-      console.log(e.target.name," : ",e.target.value);
-      setUser({
-        ...user,
-        [name]: value
-      })
-    }
+    const {name, value} = e.target;
 
+    console.log(e.target.name," : ",e.target.value);
+    setUser({
+      ...user,
+      [name]: value
+    })    
     console.log(user);
+  }
+  
+  // handleSpecializationChange
+  const handleSpecializationChange = (e) => {
+    setSpecialization(e.target.value)
+  }
+
+  const uploadImageHandler = (e) => {
+    const files = imageRef.current.files;
+    const file = files[0];
+    const fileRef = ref(storage, `user-profile/${file.name}`);
+    setSelectedFile(file.name);
+    uploadBytes(fileRef, file)
+      .then(() => {
+        getDownloadURL(fileRef).then((url) => {
+          setUrl(url);
+        });
+        setUser({
+          ...user, 
+          photoProfile: url
+        })
+      });
+    imageRef.current.files = e.target.files;
+    e.target.files = files;
   }
 
   const handlerCancel = (e) => {
     e.preventDefault();
     setUser(initialUserState);
     console.log(user);
+    setSelectedFile("");
   }
 
   const handlerSubmit = (e) => {
     e.preventDefault()
+
+    var data = JSON.stringify({
+      "name": user.fullName,
+      "image_url": url,
+      "specialization_id": specialization,
+      "email": user.email,
+      "password": user.password,
+      "phone_number": user.phoneNumber,
+      "address": {
+        "detail_address": user.detailAddress,
+        "country": user.country,
+        "state_province": user.state,
+        "city": user.city,
+        "zip_code": user.zipCode
+      }
+    })
+
+    const token = getToken();
+    var configAddUser = {
+      method: 'post',
+      url: `${BASE_URL}/auth/signup`,
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(configAddUser)
+    .then(res => {
+      Swal.fire(
+        'Success!',
+        'Successfully Added User!',
+        'success'
+      )
+    })
+    .catch(err => console.log(err));
   }
 
   return (
@@ -70,7 +148,7 @@ function AddUser() {
                     type="text"
                     id='fullName' 
                     name='fullName' 
-                    placeholder='Your Name'
+                    placeholder='User full name'
                     required
                     value={user.fullName} 
                     onChange={handleInputChange}
@@ -83,12 +161,13 @@ function AddUser() {
                     style={{ padding: "10px 25px", margin: "20px 0", fontFamily: "Poppins", borderRadius: "10px", backgroundColor: "#E7E7E7", display: "inline-block", cursor: "pointer", color: "#0D2341", opacity: ".9"}}
                   > Choose File
                     <input 
+                      ref={imageRef}
                       type="file" 
                       name="photoProfile" 
                       id="photoProfile"
                       accept="image/png, image/jpg, image/gif, image/jpeg"
                       style={{display: "none"}}
-                      onChange={handleInputChange} 
+                      onChange={uploadImageHandler} 
                     />
                   </label>
                   <span style={{color: "#0D2341", fontSize: "16px", fontFamily: "Poppins", marginLeft: "10px", opacity: ".8"}}>
@@ -97,13 +176,23 @@ function AddUser() {
                 </div>
               </div>
               
-              <label htmlFor="specialist">Specialist</label>
+              <label htmlFor="specialization">Specialization</label>
+              <select value={specialization} name="specialization" id="specialization" onChange={handleSpecializationChange} required>
+                <option value="" hidden>Set Specialization</option>
+                {allSpecialization.map(specialization => {
+                  return(
+                    <option key={specialization.id} value={specialization.id}>{specialization.name}</option>
+                  )
+                })}
+              </select>
+
+              {/* <label htmlFor="specialist">Specialist</label>
               <select value={user.specialist} name="specialist" id="specialist" onChange={handleInputChange} required>
                 <option value="" selected hidden>Set Role</option>
                 <option value="Designer">Designer</option>
                 <option value="Engineer">Engineer</option>
                 <option value="Management">Management</option>
-              </select>
+              </select> */}
 
               <label htmlFor="email">Email</label>
               <input 
@@ -116,6 +205,17 @@ function AddUser() {
                 onChange={handleInputChange}
               />
               
+              <label htmlFor="password">Password</label>
+              <input 
+                type="text"
+                id='password' 
+                name='password' 
+                placeholder='User Password'
+                required
+                value={user.password} 
+                onChange={handleInputChange}
+              />
+
               <label htmlFor="phoneNumber">Phone Number</label>
               <input 
                 type="tel"
@@ -176,7 +276,7 @@ function AddUser() {
                 <div className={`col-md-6 col-sm-12 col-lg-6 col-xl-6 ps-2 ${classes.thecontent}`}> 
                   <label htmlFor="zipCode">zipCode</label>
                   <input 
-                    type="text"
+                    type="number"
                     id='zipCode' 
                     name='zipCode' 
                     placeholder='xxxxx'
