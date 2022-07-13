@@ -49,7 +49,7 @@
   font-weight: 500;
 }
 
-.editRequest > form > input, .editRequest > form > select{
+.editRequest > form > input, .editRequest > form > select, .editRequest > form > textarea{
   width: 60%;
   padding: 20px;
   border: 1px solid #0D2341;
@@ -58,10 +58,16 @@
   font-family: "Poppins", sans-serif;
   margin: 1rem 0;
 }
-.editRequest > form > input[name='specialization'], .editRequest > form > input[name="requestType"], .editRequest > form > select[name="status"]{
+.editRequest > form > input[name='specialization'], .editRequest > form > input[name="email"], .editRequest > form > input[name="requestTitle"]{
+  width: 40%;
+}
+.editRequest > form > input[name='specialization']{
+  background-color: #D6DEEC;
+  border: none;
+}
+.editRequest > form > input[name="requestType"], .editRequest > form > select[name="status"]{
   width: 25%;
 }
-
 .buttonWrapper {
   display: flex;
   column-gap: 20px;
