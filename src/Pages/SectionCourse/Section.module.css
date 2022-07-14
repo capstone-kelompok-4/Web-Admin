@@ -91,3 +91,9 @@
   font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
+
+.error {
+  color: #ff0000;
+  font-family: "Poppins";
+  margin-bottom: 20px;
+}

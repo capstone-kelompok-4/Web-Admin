@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { CircularProgress } from '@mui/material';
 // import Pagination from '../../Components/Pagination/Pagination';
 import Search from '../../Components/Search/Search';
 import classes from "./EditSection.module.css";
@@ -90,55 +91,63 @@ const EditSection = ({onDelete, getSectionById}) => {
           <Search placeholder="Cari Section" className={classes.searchBar}/>
         </div>
         <div className={classes.table}>
-          <table>
-            <thead>
-              <tr>
-                <td>Section Name</td>
-                <td>Course</td>
-                <td>Data Uploaded</td>
-                <td>Last Updated</td>
-                <td>Action</td>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                dataFromParent.courses.map((course) => {
-                  return(
-                    <>
-                      {
-                        course.sections.map((section, idx) => {
-                          return(
-                            <tr key={idx}>
-                              <td>{section.name}</td>
-                              <td>{course.name}</td>
-                              <td>{showFormattedDate(section.created_at)}</td>
-                              { section.updated_at === null ? (
-                                <td>{showFormattedDate(section.created_at)}</td>
-                                ) : (
-                                <td>{showFormattedDate(section.updated_at)}</td>
-                              )}
-                              <td>
-                                <img 
-                                  src={EditIcon} 
-                                  alt="editIcon" 
-                                  style={{marginRight: "10px", cursor: "pointer"}} 
-                                  onClick={() => {
-                                    editHandler(course.id, section.id)
-                                    dataFromParent.setEditMode(true);
-                                  }}
-                                />
-                                <img src={DeleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}} onClick={() => deleteHandler(course.id, section.id)}/>
-                              </td>
-                            </tr>
-                          )
-                        })
-                      }
-                    </>
-                  )
-                })
-              }
-            </tbody>
-          </table>
+          {
+            dataFromParent.loading ? (
+              <div className={classes.spinnerContain}>
+                <CircularProgress style={{ width: "200px", height: "200px", color: "#FF6C00" }} />
+              </div>
+            ) : (
+              <table>
+                <thead>
+                  <tr>
+                    <td>Section Name</td>
+                    <td>Course</td>
+                    <td>Data Uploaded</td>
+                    <td>Last Updated</td>
+                    <td>Action</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    dataFromParent.courses.map((course) => {
+                      return(
+                        <>
+                          {
+                            course.sections.map((section, idx) => {
+                              return(
+                                <tr key={idx}>
+                                  <td>{section.name}</td>
+                                  <td>{course.name}</td>
+                                  <td>{showFormattedDate(section.created_at)}</td>
+                                  { section.updated_at === null ? (
+                                    <td>{showFormattedDate(section.created_at)}</td>
+                                    ) : (
+                                    <td>{showFormattedDate(section.updated_at)}</td>
+                                  )}
+                                  <td>
+                                    <img 
+                                      src={EditIcon} 
+                                      alt="editIcon" 
+                                      style={{marginRight: "10px", cursor: "pointer"}} 
+                                      onClick={() => {
+                                        editHandler(course.id, section.id)
+                                        dataFromParent.setEditMode(true);
+                                      }}
+                                    />
+                                    <img src={DeleteIcon} alt="deleteIcon" style={{cursor: 'pointer'}} onClick={() => deleteHandler(course.id, section.id)}/>
+                                  </td>
+                                </tr>
+                              )
+                            })
+                          }
+                        </>
+                      )
+                    })
+                  }
+                </tbody>
+              </table>
+            )
+          }
         </div>
       </div>
       {/* <div className={classes.pagination}>

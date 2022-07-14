@@ -62,6 +62,10 @@
   height: 400px;
 }
 
+.statistics > canvas {
+  margin-top: 10px;
+  height: 320px !important;
+}
 .statisticWrapper > .right > .recentActivity{
   background-color: #FFF;
   border-radius: 12px;

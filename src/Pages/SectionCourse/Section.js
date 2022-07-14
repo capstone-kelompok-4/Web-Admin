@@ -22,6 +22,12 @@ const Section = () => {
   const [courseId, setCourseId] = useState("");
   const [sectionId, setSectionId] = useState("");
   const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState({
+    number: "", 
+    name: "", 
+    course: ""
+  });
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
     getAllCourses();
@@ -46,6 +52,7 @@ const Section = () => {
   }
 
   const getAllCourses = () => {
+    setLoading(true);
     const token = getToken();
     var config = {
       method: 'get',
@@ -54,11 +61,46 @@ const Section = () => {
         'Authorization': `Bearer ${token}`
       }
     };
-    axios(config).then(res => setCourses(res.data.data)).catch(err => console.log(err));
+    axios(config).then(res => {
+      setLoading(false);
+      setCourses(res.data.data)
+    }).catch(err => {
+      setLoading(false);
+      console.log(err)
+    });
   }
+
   const handleInputChange = (e) => {
     const {name, value} = e.target;
 
+    setError(prev => {
+      const stateObj = { ...prev, [name]: "" };
+   
+      switch (name) {
+        case "number":
+          if (!value) {
+            stateObj[name] = "Section Number Tidak Boleh Kosong !";
+          }
+          break;
+   
+        case "name":
+          if (!value) {
+            stateObj[name] = "Nama Section Tidak Boleh Kosong !";
+          } 
+          break;
+
+        case "course":
+          if (!value) {
+            stateObj[name] = "Nama Course Tidak Boleh Kosong !";
+          } 
+          break;
+
+        default:
+          break;
+      }
+   
+      return stateObj;
+    });
     setSection({
       ...section, 
       [name]: value
@@ -75,66 +117,73 @@ const Section = () => {
     // Edit mode value get from glabal context
     console.log(editMode); 
 
-    // This will executed axios post
-    if(editMode !== true) {
-      const data = JSON.stringify({
-        "number": section.number,
-        "name": section.name
-      });
-  
-      const token = getToken();
-      const configAddSection = {
-        method: 'post',
-        url: `${BASE_URL}/courses/${courseId}/sections`,
-        headers: { 
-          'Authorization': `Bearer ${token}`, 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
-  
-      axios(configAddSection).then(res => {
-        Swal.fire(
-          "Success!",
-          "Successfully Added Section",
-          "success"
-        )
+    if(section.number === "" || section.name === "" || courseId === "") {
+      Swal.fire(
+        "Warning!",
+        "Data Tidak Boleh Kosong", 
+        "warning"
+      )
+    } else {
+      // This will executed axios post
+      if(editMode !== true) {
+        const data = JSON.stringify({
+          "number": section.number,
+          "name": section.name
+        });
+    
+        const token = getToken();
+        const configAddSection = {
+          method: 'post',
+          url: `${BASE_URL}/courses/${courseId}/sections`,
+          headers: { 
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json'
+          },
+          data : data
+        };
+    
+        axios(configAddSection).then( async () => {
+          await Swal.fire(
+            "Success!",
+            "Successfully Added Section",
+            "success"
+          )
+          setSection(initialState);
+          setCourseId("");
+          getAllCourses();
+        }).catch(err => console.log(err));
+      } else { 
+        //This code below will executed axios post
+        const token = getToken()
+        var data = JSON.stringify({
+          "number": section.number,
+          "name": section.name,
+        });
         
-        setSection(initialState);
-        setCourseId("");
-        getAllCourses();
-      }).catch(err => console.log(err));
-    } else { 
-      //This code below will executed axios post
-      const token = getToken()
-      var data = JSON.stringify({
-        "number": section.number,
-        "name": section.name,
-      });
-      
-      var configEditSection = {
-        method: 'put',
-        url: `${BASE_URL}/courses/${courseId}/sections/${sectionId}`,
-        headers: { 
-          'Authorization': `Bearer ${token}`, 
-          'Content-Type': 'application/json'
-        },
-        data : data
-      };
-      
-      axios(configEditSection)
-      .then(res => {
-        Swal.fire(
-          "Success!",
-          "Successfully Edit Section",
-          "success"
-        )
-        setSection(initialState);
-        setCourseId("");
-        getAllCourses();
-        setEditMode(false);
-      })
-      .catch(err => console.log(err));
+        var configEditSection = {
+          method: 'put',
+          url: `${BASE_URL}/courses/${courseId}/sections/${sectionId}`,
+          headers: { 
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json'
+          },
+          data : data
+        };
+        
+        axios(configEditSection)
+        .then(async () => {
+          await Swal.fire(
+            "Success!",
+            "Successfully Edit Section",
+            "success"
+          )
+          setSection(initialState);
+          setCourseId("");
+          getAllCourses();
+          setEditMode(false);
+        })
+        .catch(err => console.log(err));
+      }
     }
   }
 
@@ -157,23 +206,22 @@ const Section = () => {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        axios(configDeleteSection).then(res => {
-          console.log(res.data)
-          getAllCourses();
-        }).catch(err => console.log(err))
-        Swal.fire(
+        await Swal.fire(
           'Deleted!',
           'Your file has been deleted.',
           'success'
         )
+        axios(configDeleteSection).then(() => {
+          getAllCourses();
+        }).catch(err => console.log(err))
       }
     })
   }
 
   return (
-    <ContextGlobal.Provider value={{courses: courses, setCourses: setCourses, getAllCourses, editMode: editMode, setEditMode: setEditMode, courseId: courseId, setCourseId: setCourseId, sectionId: sectionId, setSectionId: setSectionId}}>
+    <ContextGlobal.Provider value={{courses: courses, setCourses: setCourses, getAllCourses, editMode: editMode, setEditMode: setEditMode, courseId: courseId, setCourseId: setCourseId, sectionId: sectionId, setSectionId: setSectionId, loading: loading}}>
       <Sidebar activeNow="Section Course"/>
       <div className={classes.container}>
         <Header data="Section Course"/>
@@ -192,6 +240,8 @@ const Section = () => {
                 value={section.number} 
                 onChange={handleInputChange}
               />
+              {error.number && <h5 className={classes.error}>{error.number}</h5>}
+
               <label htmlFor="name">Section Name</label>
               <input 
                 type="text" 
@@ -201,6 +251,8 @@ const Section = () => {
                 value={section.name} 
                 onChange={handleInputChange}
               />
+              {error.name && <h5 className={classes.error}>{error.name}</h5>}
+
               <label htmlFor="course">Course</label>
               <select name="course" id="course" style={{width: "45%"}} onChange={handleCourseName} value={courseId}>
                 <option value="">Choose Course Name</option>
@@ -210,6 +262,7 @@ const Section = () => {
                   )
                 })}
               </select>
+              {error.course && <h5 className={classes.error}>{error.course}</h5>}
               <div className={classes.action}>
                 <Button className={classes.btnSave} name={editMode ? "Update":"Submit"}/>
               </div>

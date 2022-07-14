@@ -2,7 +2,7 @@ import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import Button from '../../Components/Button/Button'
 import Header from '../../Components/Header/Header'
@@ -14,6 +14,7 @@ const EditRequest = () => {
   const { id } = useParams();
   const [courseTaken, setCourseTaken] = useState({})
   const [reqStatus, setReqStatus] = useState("");
+  const navigate = useNavigate();
 
   const handleEditRequest = (e) => {
     e.preventDefault();
@@ -33,12 +34,13 @@ const EditRequest = () => {
     };
 
     axios(config)
-    .then(() => {
-      Swal.fire(
+    .then( async () => {
+      await Swal.fire(
         "Success!",
         "Successfully Updated Request",
         'success',
       )
+      navigate("/request")
     })
     .catch(err => {
       console.log(err);
@@ -103,7 +105,7 @@ const EditRequest = () => {
                 name='specialization' 
                 id='specialization' 
                 value={courseTaken.user?.user_specialization.name}
-                readOnly
+                disabled
               />
               <label htmlFor="requestType">Request Type</label>
               <input 
@@ -120,6 +122,22 @@ const EditRequest = () => {
                 <option value="2">Rejected</option>
               </select>
 
+              <label htmlFor="requestTitle">Request Title</label>
+              <input 
+                type="text" 
+                name='requestTitle' 
+                id='requestTitle' 
+                value={courseTaken.course_take?.name}
+                readOnly
+              />
+              <label htmlFor="requestDetail">Request Detail</label>
+              <textarea 
+                name="requestDetail" 
+                id="requestDetail" 
+                rows="5" 
+                value={courseTaken.request_detail} 
+                readOnly
+              ></textarea>
               <div className={classes.buttonWrapper}>
                 <Button className={classes.btnSave} name="Save" />
               </div>

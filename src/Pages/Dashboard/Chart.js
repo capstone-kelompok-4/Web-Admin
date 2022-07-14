@@ -33,19 +33,19 @@ export function Chart() {
     },
   };
   
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June'];
   
   const data = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
-        data: [10, 30, 25, 40, 25, 30, 45],
+        label: 'Active Users',
+        data: [10, 30, 25, 40, 25, 30],
         backgroundColor: '#305CA1',
       },
       {
-        label: 'Dataset 2',
-        data: [20, 35, 10, 60, 30, 20, 30],
+        label: 'Accessed Course',
+        data: [20, 35, 10, 60, 30, 20],
         backgroundColor: '#F47522',
       },
     ],
