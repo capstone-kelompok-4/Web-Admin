@@ -88,7 +88,7 @@ const EditMaterial = ({onDelete, getMaterialById}) => {
                 <thead>
                   <tr>
                     <td>File Name</td>
-                    <td>Section</td>
+                    {/* <td>Section</td> */}
                     <td>Course</td>
                     <td>Data Uploaded</td>
                     <td>Last Updated</td>
@@ -115,7 +115,7 @@ const EditMaterial = ({onDelete, getMaterialById}) => {
                                       return(
                                         <tr key={idx}>
                                           <td><img src={MaterialIcon} alt="avatar" width="40px" style={{borderRadius: "50%", marginRight: "10px"}}/>{material.name}</td>
-                                          <td>{section.name}</td>
+                                          {/* <td>{section.name}</td> */}
                                           <td>{course.name}</td>
                                           <td>{showFormattedDate(material.created_at)}</td>
                                           {
