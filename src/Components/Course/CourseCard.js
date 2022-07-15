@@ -43,11 +43,11 @@ function CourseCard({course_id, title, img, progress, rating, total_material, sh
             </div>
           </div>
           <div className={classes.readMore}>
-            <button className={classes.btn}>
-              <Link to={`/manage_courses/edit_course/${course_id}`}>
+            <Link to={`/manage_courses/edit_course/${course_id}`}>
+              <button className={classes.btn}>
                 Edit Course
-              </Link>
-            </button>
+              </button>
+            </Link>
           </div>
         </div>
         }

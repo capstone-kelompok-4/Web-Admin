@@ -4,7 +4,7 @@ import Sidebar from '../../Components/Navigation/Sidebar'
 import Pagination from '../../Components/Pagination/Pagination'
 import Search from '../../Components/Search/Search'
 import classes from "./Request.module.css";
-import ChevronRightIcon from "../../Assets/Icons/chevron_right.svg";
+import EditIcon from "../../Assets/Icons/edit_icon.svg"
 import DefaultProfile from "../../Assets/Images/default-profile.jpg";
 import Button from '../../Components/Button/Button'
 import Footer from '../../Components/Footer/Footer'
@@ -166,7 +166,7 @@ const Request = () => {
                                   {
                                     request.status === "PENDING" && (
                                       <Link to={`/request/${request.id}`}>
-                                        <img src={ChevronRightIcon} alt="chevronIcon" width="30px" style={{cursor: "pointer"}}/>
+                                        <img src={EditIcon} alt="editIcon" width="30px" style={{cursor: "pointer"}}/>
                                       </Link>
                                     )
                                   }

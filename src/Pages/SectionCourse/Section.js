@@ -230,6 +230,17 @@ const Section = () => {
           <p>Setting the part section of the course to make easier uploading files.</p>
           <div className={classes.sectionCourse}>
             <form onSubmit={handleSubmitSection}>
+              <label htmlFor="course">Course</label>
+              <select name="course" id="course" style={{width: "45%"}} onChange={handleCourseName} value={courseId}>
+                <option value="">Choose Course Name</option>
+                {courses.map((course) => {
+                  return(
+                    <option value={course.id} key={course.id} >{course.name}</option>
+                  )
+                })}
+              </select>
+              {error.course && <h5 className={classes.error}>{error.course}</h5>}
+              
               <label htmlFor="number">Section Number</label>
               <input 
                 type="number" 
@@ -253,16 +264,6 @@ const Section = () => {
               />
               {error.name && <h5 className={classes.error}>{error.name}</h5>}
 
-              <label htmlFor="course">Course</label>
-              <select name="course" id="course" style={{width: "45%"}} onChange={handleCourseName} value={courseId}>
-                <option value="">Choose Course Name</option>
-                {courses.map((course) => {
-                  return(
-                    <option value={course.id} key={course.id} >{course.name}</option>
-                  )
-                })}
-              </select>
-              {error.course && <h5 className={classes.error}>{error.course}</h5>}
               <div className={classes.action}>
                 <Button className={classes.btnSave} name={editMode ? "Update":"Submit"}/>
               </div>
