@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Button from '../../Components/Button/Button';
 import Footer from '../../Components/Footer/Footer';
@@ -12,13 +12,13 @@ import { storage } from '../../Firebase/Firebase';
 import classes from "./AddCourse.module.css";
 
 const EditCourse = () => {
+  const navigate = useNavigate();
   const imageRef = useRef();
   const { course_id } = useParams();
   const [course, setCourse] = useState({})
   const [url, setUrl] = useState("");
   const [selectedFile, setSelectedFile] = useState("");
   const [allSpecialization, setAllSpecialization] = useState([]);
-  console.log(course);
   const [methodologyLearning, setMethodologyLearning] = useState({
     0 : false,
     1 : false,
@@ -179,12 +179,13 @@ const EditCourse = () => {
     };
     
     axios(configEditCourse)
-    .then(() => {
-      Swal.fire(
+    .then(async () => {
+      await Swal.fire(
         'Success!',
         'Successfully Update Course!',
         'success'
       )
+      navigate("/manage_courses");
     })
     .catch(err => {
       if (err.response){

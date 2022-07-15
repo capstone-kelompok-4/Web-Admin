@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React, { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import Button from '../../Components/Button/Button';
 import Footer from '../../Components/Footer/Footer';
@@ -45,7 +46,7 @@ const AddCourse = () => {
   const [course, setCourse] = useState(initialCourseState);
   const [allSpecialization, setAllSpecialization] = useState([]);
   const [specialization, setSpecialization] = useState("");
-  console.log(specialization);
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState("");
   const [url, setUrl] = useState("");
   const imageRef = useRef();
@@ -176,12 +177,13 @@ const AddCourse = () => {
     };
     
     axios(configAddCourse)
-    .then(res => {
-      Swal.fire(
+    .then(async () => {
+      await Swal.fire(
         'Success!',
         'Successfully Added Course!',
         'success'
       )
+      navigate("/manage_courses")
     })
     .catch(err => console.log(err));
   }

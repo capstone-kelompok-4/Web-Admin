@@ -70,7 +70,7 @@
   width: 100%;
   font-family: "Poppins", sans-serif;
   border-collapse: separate;
-  border-spacing: 0 20px;
+  border-spacing: 0 30px;
 }
 
 .table > table > thead > tr > td{
@@ -89,4 +89,12 @@
   justify-content: space-between;
   align-items: center;
   font-family: "Poppins", sans-serif;
+}
+
+/* Loading */
+.spinnerContain{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 100px auto;
 }
