@@ -139,13 +139,13 @@ function EditUser() {
     };
     
     axios(configEditUser)
-    .then(res => {
-      Swal.fire(
+    .then(async res => {
+      await Swal.fire(
         'Success!',
         'Successfully Update User!',
         'success'
       )
-      navigate("/manage_users");
+      await navigate("/manage_users");
     })
     .catch(err => console.log(err));
   
@@ -195,14 +195,6 @@ function EditUser() {
                   </span>
                 </div>
               </div>
-              
-              {/* <label htmlFor="specialist">Specialist</label>
-              <select value={user.specialist} name="specialist" id="specialist" onChange={handleInputChange} required>
-                <option value="" hidden>Set Role</option>
-                <option value="Designer">Designer</option>
-                <option value="Engineer">Engineer</option>
-                <option value="Management">Management</option>
-              </select> */}
 
               <label htmlFor="specialization">Specialization</label>
               <select value={user.user_specialization?.id} name="specialization" id="specialization" onChange={handleSpecializationChange} required>

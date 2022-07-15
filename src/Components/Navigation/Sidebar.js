@@ -2,12 +2,15 @@ import React, { useState } from 'react'
 import classes from "./Sidebar.module.css";
 import AlterraLogo from "../../Assets/Images/alterra_logo.png";
 import UserIcon from "../../Assets/Icons/user-icon.svg";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import DashboardIcon from "../../Assets/Icons/dashboard.svg"
 import SectionIcon from "../../Assets/Icons/section-coourse.svg"
 import UploadFileIcon from "../../Assets/Icons/upload-files.svg"
 import DataReportIcon from "../../Assets/Icons/data-reports.svg"
 import CourseIcon from "../../Assets/Icons/manage-courses.svg"
+import LogoutIcon from "../../Assets/Icons/logout.svg"
+import { removeAdminSession } from '../../Configs/APIAuth';
+import Swal from 'sweetalert2';
 
 const Sidebar = ({activeNow}) => {
   const [active, setActive] = useState(activeNow);
@@ -50,9 +53,21 @@ const Sidebar = ({activeNow}) => {
     },
   ]
   
-  const handleClick = (e) => {
+  const handleClick = (e) => {    
     setActive(e.target.innerText);
   }
+
+  const navigate = useNavigate();
+  const logoutHandler = async () => {
+    await removeAdminSession();
+    await Swal.fire(
+      'Logout!',
+      'Succesfully Logout.',
+      'success'
+    )
+    await navigate("/login");
+  }
+
   return (
     <>
       <div className={classes.container}>
@@ -71,6 +86,10 @@ const Sidebar = ({activeNow}) => {
             )
           })
         }
+        <button className={classes.navLink} onClick={logoutHandler} >
+          <img src={LogoutIcon} alt="iconButton" width="18px"/> 
+          <h5>Logout</h5>
+        </button>
       </div>
     </>
   )

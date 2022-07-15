@@ -29,3 +29,9 @@
   margin: 0;
   font-weight: bold;
 }
+
+.container > button {
+  border: 0;
+  background-color: #FFF;
+  margin-top: 0;
+}

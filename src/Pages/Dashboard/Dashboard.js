@@ -7,12 +7,15 @@ import Footer from '../../Components/Footer/Footer';
 import { BASE_URL, getToken } from '../../Configs/APIAuth';
 import axios from 'axios';
 import Chart from "./Chart.js";
+import { BASE_URL3 } from '../../Configs/MockAPI';
+import Activity from './Activity';
 
 function Dashboard() {
   const [courseData, setCourseData] = useState([]);
   const [usersData, setUsersData] = useState([]);
   const [requestsData, setRequestsData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [activityData, setActivityData] = useState([]);
   
   useEffect(() => {
     setLoading(true);
@@ -46,6 +49,8 @@ function Dashboard() {
       }
     };
     axios(configGetAllRequests).then(res => setRequestsData(res.data.data)).catch(err => console.log(err));
+
+    axios.get(`${BASE_URL3}/Recent_Activity`).then(res => setActivityData(res.data)).catch(err => console.log(err.message));
   }, [])
 
   // GET ONLY ROLE USER
@@ -80,7 +85,8 @@ function Dashboard() {
           </div>
           <div className={classes.right}>
             <div className={classes.recentActivity}>
-              <p className={classes.title}>Recent Activity</p>  
+              <p className={classes.title}>Recent Activity</p> 
+              <Activity data={activityData} />
             </div>
           </div>
         </div>
