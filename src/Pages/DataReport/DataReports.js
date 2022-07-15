@@ -1,3 +1,5 @@
+import { CircularProgress } from '@mui/material';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Button from '../../Components/Button/Button';
 import Footer from '../../Components/Footer/Footer';
@@ -5,8 +7,10 @@ import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import Pagination from '../../Components/Pagination/Pagination';
 import Search from '../../Components/Search/Search';
+import { BASE_URL, getToken } from '../../Configs/APIAuth';
 import { getAllUsers } from '../../Configs/MockAPI';
 import classes from "./DataReports.module.css";
+import DefaultProfile from "../../Assets/Images/default-profile.jpg";
 
 const DataReports = () => {
   const [users, setUsers] = useState([]);
@@ -14,20 +18,48 @@ const DataReports = () => {
   const [dataPerPage, setDataPerPage] = useState(10);
   const [specialist, setSpecialist] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  // useEffect(() => {
+  //   getAllUsers().then(res => setUsers(res.data)).catch(err => console.log(err))
+  // }, [users])
 
   useEffect(() => {
-    getAllUsers().then(res => setUsers(res.data)).catch(err => console.log(err))
-  }, [users])
+    getAllUsers();
+  }, [])
+
+  const getAllUsers = () => {
+    setLoading(true);
+    const token = getToken();
+    var config = {
+      method: 'get',
+      url: `${BASE_URL}/users/all`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
+    axios(config)
+    .then(res => {
+      setLoading(false);
+      setUsers(res.data.data);
+    })
+    .catch(err => {
+      setLoading(false);
+      console.log(err)
+    });
+  }
+
+  const onlyRoleUser = users.filter(user => user.roles[0].name === 'ROLE_USER');
 
   // Get Current Participants
   if(specialist === ""){
     const indexOfLastParticipant = currentPage * dataPerPage;
     const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-    var currentUsers =  users.slice(indexOfFirstParticipant, indexOfLastParticipant);
+    var currentUsers =  onlyRoleUser.slice(indexOfFirstParticipant, indexOfLastParticipant);
   } else {
     const indexOfLastParticipant = currentPage * dataPerPage;
     const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-    var filtered = users.filter(user => user.specialist.toLowerCase() === specialist.toLowerCase())
+    var filtered = onlyRoleUser.filter(user => user.specialist.toLowerCase() === specialist.toLowerCase())
     currentUsers = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
   }
   
@@ -86,42 +118,56 @@ const DataReports = () => {
               </div>
             </div>
             <div className={classes.table}>
-              <table>
-                <thead>
-                  <tr>
-                    <td>#</td>
-                    <td>Roll No.</td>
-                    <td>Full Name</td>
-                    <td>Specialist</td>
-                    <td width="25%">Email</td>
-                    <td>Reports</td>
-                    <td>Certificates</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    currentUsers.filter((user) => {
-                      if(searchTerm === "") {
-                        return user
-                      } else if (user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
-                        return user 
-                      } return false
-                    }).map((user, idx) => {
-                      return(
-                        <tr key={idx}>
-                          <td><img src={user.avatar} alt="avatar" width="50px" style={{borderRadius: "50%"}}/></td>
-                          <td>{user.id}</td>
-                          <td>{user.fullName}</td>
-                          <td>{user.specialist}</td>
-                          <td>{user.email}</td>
-                          <td><Button name="Unduh" className={classes.downloadBtn}/></td>
-                          <td><Button name="Unduh" className={classes.downloadBtn}/></td>
-                        </tr>
-                      )
-                    })
-                  }
-                </tbody>
-              </table>
+              {
+                loading ? (
+                  <div className={classes.spinnerContain}>
+                    <CircularProgress style={{ width: "200px", height: "200px", color: "#FF6C00" }} />
+                  </div>
+                ) : (
+                  <table>
+                    <thead>
+                      <tr>
+                        <td>#</td>
+                        <td>Roll No.</td>
+                        <td>Full Name</td>
+                        <td>Specialist</td>
+                        <td width="25%">Email</td>
+                        <td>Reports</td>
+                        <td>Certificates</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        currentUsers.filter((user) => {
+                          if(searchTerm === "") {
+                            return user
+                          } else if (user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            return user 
+                          } return false
+                        }).map((user, idx) => {
+                          return(
+                            <tr key={idx}>
+                              {
+                                  user?.image_url === "" || user?.image_url === null ? (
+                                      <img src={DefaultProfile} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                  ) : (
+                                      <img src={user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                  )
+                              }
+                              <td>&emsp;{idx+1}</td>
+                              <td>{user?.name}</td>
+                              <td>{user?.user_specialization?.name}</td>
+                              <td>{user?.username}</td>
+                              <td><Button name="Unduh" className={classes.downloadBtn}/></td>
+                              <td><Button name="Unduh" className={classes.downloadBtn}/></td>
+                            </tr>
+                          )
+                        })
+                      }
+                    </tbody>
+                  </table>
+                )
+              }
             </div>
           </div>
           {

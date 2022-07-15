@@ -130,3 +130,10 @@
   align-items: center;
   font-family: "Poppins", sans-serif;
 }
+
+.spinnerContain{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
