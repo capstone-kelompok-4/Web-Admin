@@ -18,13 +18,10 @@ function Activity({ data }) {
             {data.map((user) => (
               <div className='mb-2'>
                 <tr className='d-flex align-items-center w-100'>
-                    <td><img src={user.avatar} className="rounded-circle flex-column align-items-center" alt="profileImg" width="32px" height="32px"/></td>
+                    <td><img src={user.avatar} className="rounded-circle flex-column align-items-center" alt="profileImg" width="40px" height="40px"/></td>
                     <td className='flex-column align-items-center mx-2' style={{columnGap: "10px"}}>
-                      <p className={`m-0 fw-bold ${classes.infoactivity}`}>{user.name}</p>
+                      <p className={`m-0 fw-bold ${classes.infoname}`}>{user.name}</p>
                       <p className={`m-0 ${classes.infoactivity}`}>{user.activity}</p>
-                    </td>
-                    <td className='flex-column align-items-center'>
-                      <p className={`m-0 ${classes.infoactivity}`}>{showFormattedDate(user.createdAt)}</p>
                     </td>
                 </tr>
               </div>

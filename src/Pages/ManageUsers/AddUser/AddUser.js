@@ -205,7 +205,7 @@ function AddUser() {
                 type="password"
                 id='password' 
                 name='password' 
-                placeholder='User Password'
+                placeholder='enter user password at least 8 character'
                 required
                 value={user.password} 
                 onChange={handleInputChange}
@@ -227,7 +227,7 @@ function AddUser() {
                 type="text"
                 id='detailAddress' 
                 name='detailAddress' 
-                placeholder=''
+                placeholder='Detail Address'
                 required
                 value={user.detailAddress} 
                 onChange={handleInputChange}

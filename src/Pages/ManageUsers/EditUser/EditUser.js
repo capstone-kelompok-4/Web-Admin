@@ -234,7 +234,7 @@ function EditUser() {
                 type="text"
                 id='detail_address' 
                 name='detail_address' 
-                placeholder=''
+                placeholder='Detail Address'
                 required
                 value={user?.address?.detail_address} 
                 onChange={handleInputChange}

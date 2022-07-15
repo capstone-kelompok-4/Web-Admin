@@ -23,13 +23,32 @@
   border-radius: 12px;
   color: #0d2341;
   padding: 30px;
-  width: 30%;
+  width: 32%;
 }
 
 .title{
   margin: 0;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
+} 
+
+.titleinfo{
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #FF6C00 !important;
+  font-size: 16px !important;
+} 
+
+.btninfoall{
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #99a3af !important;
+  font-size: 16px !important;
+  background: transparent;
+  border-radius: 10px;
+  border: none;
 } 
 
 .wrapper > .info {
@@ -58,7 +77,7 @@
   border-radius: 12px;
   color: #0d2341;
   padding: 30px;
-  width: 90%;
+  width: 95%;
   height: 400px;
 }
 

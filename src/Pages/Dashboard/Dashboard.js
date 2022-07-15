@@ -79,13 +79,18 @@ function Dashboard() {
         <div className={classes.statisticWrapper}>
           <div className={classes.left}>
             <div className={classes.statistics}>
-              <p className={classes.title}>Access Statistics</p>
+              <p className={classes.titleinfo}>Access Statistics</p>
               <Chart />
             </div>
           </div>
           <div className={classes.right}>
             <div className={classes.recentActivity}>
-              <p className={classes.title}>Recent Activity</p> 
+              <div className='d-flex justify-content-between'>
+                <p className={classes.titleinfo}>Recent Activity</p> 
+                {/* <p className={classes.titleinfoall}>View All</p> */}
+                <button type="button" className={classes.btninfoall}>View All</button> 
+              </div>
+              
               <Activity data={activityData} />
             </div>
           </div>

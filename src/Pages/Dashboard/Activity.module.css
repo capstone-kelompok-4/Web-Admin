@@ -1,4 +1,11 @@
+.infoname{
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600 !important;
+}
+
 .infoactivity{
     font-family: "Poppins", sans-serif;
     font-size: 15.5px;
+    color: #99a3af !important;
 }
