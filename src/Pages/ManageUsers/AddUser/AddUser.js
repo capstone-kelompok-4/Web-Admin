@@ -9,6 +9,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../../Firebase/Firebase';
+import { useNavigate } from 'react-router-dom';
 
 function AddUser() {
   useEffect(() => {
@@ -46,6 +47,7 @@ function AddUser() {
   const [url, setUrl] = useState("");
   console.log(url);
   const imageRef = useRef();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const {name, value} = e.target;
@@ -120,12 +122,13 @@ function AddUser() {
     };
     
     axios(configAddUser)
-    .then(res => {
-      Swal.fire(
+    .then( async res => {
+      await Swal.fire(
         'Success!',
         'Successfully Added User!',
         'success'
       )
+      await navigate("/manage_users");
     })
     .catch(err => console.log(err));
   }
@@ -186,14 +189,6 @@ function AddUser() {
                 })}
               </select>
 
-              {/* <label htmlFor="specialist">Specialist</label>
-              <select value={user.specialist} name="specialist" id="specialist" onChange={handleInputChange} required>
-                <option value="" selected hidden>Set Role</option>
-                <option value="Designer">Designer</option>
-                <option value="Engineer">Engineer</option>
-                <option value="Management">Management</option>
-              </select> */}
-
               <label htmlFor="email">Email</label>
               <input 
                 type="email"
@@ -207,7 +202,7 @@ function AddUser() {
               
               <label htmlFor="password">Password</label>
               <input 
-                type="text"
+                type="password"
                 id='password' 
                 name='password' 
                 placeholder='User Password'
