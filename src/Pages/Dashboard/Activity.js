@@ -1,4 +1,5 @@
 import React from 'react'
+import classes from "./Activity.module.css";
 
 function Activity({ data }) {
   const showFormattedDate = (date) => {
@@ -19,10 +20,12 @@ function Activity({ data }) {
                 <tr className='d-flex align-items-center w-100'>
                     <td><img src={user.avatar} className="rounded-circle flex-column align-items-center" alt="profileImg" width="32px" height="32px"/></td>
                     <td className='flex-column align-items-center mx-2' style={{columnGap: "10px"}}>
-                      <p className='m-0 fw-bold'>{user.name}</p>
-                      <p className='m-0'>{user.activity}</p>
+                      <p className={`m-0 fw-bold ${classes.infoactivity}`}>{user.name}</p>
+                      <p className={`m-0 ${classes.infoactivity}`}>{user.activity}</p>
                     </td>
-                    <td className='flex-column align-items-center'><p className='m-0'>{showFormattedDate(user.createdAt)}</p></td>
+                    <td className='flex-column align-items-center'>
+                      <p className={`m-0 ${classes.infoactivity}`}>{showFormattedDate(user.createdAt)}</p>
+                    </td>
                 </tr>
               </div>
             ))}
