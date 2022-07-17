@@ -16,7 +16,7 @@ import { CircularProgress } from '@mui/material';
 const Request = () => {
   const [requests, setRequests] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataPerPage, setDataPerPage] = useState(6);
+  const [dataPerPage, setDataPerPage] = useState(7);
   const [type, setType] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);

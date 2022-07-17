@@ -34,7 +34,6 @@
   margin: auto;
 }
 
-
 @media screen and (max-width: 1750px) {
   .grid{
     grid-template-columns: repeat(3, 1fr);

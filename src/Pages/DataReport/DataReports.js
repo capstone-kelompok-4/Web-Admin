@@ -8,31 +8,54 @@ import Sidebar from '../../Components/Navigation/Sidebar'
 import Pagination from '../../Components/Pagination/Pagination';
 import Search from '../../Components/Search/Search';
 import { BASE_URL, getToken } from '../../Configs/APIAuth';
-import { getAllUsers } from '../../Configs/MockAPI';
 import classes from "./DataReports.module.css";
 import DefaultProfile from "../../Assets/Images/default-profile.jpg";
 
 const DataReports = () => {
-  const [users, setUsers] = useState([]);
+  const [allCourseTaken, setAllCourseTaken] = useState([]);
+  console.log(allCourseTaken);
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataPerPage, setDataPerPage] = useState(10);
+  const [dataPerPage, setDataPerPage] = useState(5);
   const [specialist, setSpecialist] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   getAllUsers().then(res => setUsers(res.data)).catch(err => console.log(err))
-  // }, [users])
-
+  
+  const handlerDownloadDataReport = (id) => {
+    const token = getToken();
+    var configGetDataReport = {
+      method: 'get',
+      url: `${BASE_URL}/course-takens/download-reports/${id}`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    axios(configGetDataReport).then((res) => console.log(res)).catch((err) => console.log(err));
+  }
   useEffect(() => {
-    getAllUsers();
+    getAllCourseTaken();
   }, [])
 
-  const getAllUsers = () => {
+  const handlerDownloadCertificate = (id) => {
+    const token = getToken();
+    var configGetCertificate = {
+      method: 'get',
+      url: `${BASE_URL}/course-takens/download-certificates/${id}`,
+      headers: { 
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    axios(configGetCertificate).then((res) => console.log(res)).catch((err) => console.log(err));
+  }
+  const sortedAllCourseTaken = allCourseTaken.sort(function(a, b) { 
+    return a.id - b.id
+  });
+
+  const getAllCourseTaken = () => {
     setLoading(true);
     const token = getToken();
     var config = {
       method: 'get',
-      url: `${BASE_URL}/users/all`,
+      url: `${BASE_URL}/course-takens`,
       headers: { 
         'Authorization': `Bearer ${token}`
       }
@@ -41,7 +64,7 @@ const DataReports = () => {
     axios(config)
     .then(res => {
       setLoading(false);
-      setUsers(res.data.data);
+      setAllCourseTaken(res.data.data);
     })
     .catch(err => {
       setLoading(false);
@@ -49,25 +72,23 @@ const DataReports = () => {
     });
   }
 
-  const onlyRoleUser = users.filter(user => user.roles[0].name === 'ROLE_USER');
-
   // Get Current Participants
   if(specialist === ""){
     const indexOfLastParticipant = currentPage * dataPerPage;
     const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-    var currentUsers =  onlyRoleUser.slice(indexOfFirstParticipant, indexOfLastParticipant);
+    var currentCourseTaken =  sortedAllCourseTaken.slice(indexOfFirstParticipant, indexOfLastParticipant);
   } else {
     const indexOfLastParticipant = currentPage * dataPerPage;
     const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
-    var filtered = onlyRoleUser.filter(user => user.specialist.toLowerCase() === specialist.toLowerCase())
-    currentUsers = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
+    var filtered = sortedAllCourseTaken.filter(courseTake => courseTake.user.user_specialization.name.toLowerCase() === specialist.toLowerCase())
+    currentCourseTaken = filtered.slice(indexOfFirstParticipant, indexOfLastParticipant);
   }
   
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const prevPage = (page) => setCurrentPage(page);
   const nextPage = (page) => setCurrentPage(page);
-  const totalPage = Math.ceil(users.length / dataPerPage);
+  const totalPage = Math.ceil(allCourseTaken.length / dataPerPage);
 
   // Handle Show Entries
   const handleShowEntries = (e) => {
@@ -96,12 +117,8 @@ const DataReports = () => {
               <div className={classes.top}>
                 <h5>Show 
                   <select name="entries" id="entries" className={classes.dropdownBtn} value={dataPerPage} onChange={handleShowEntries}>
-                    <option value="10">10</option>
-                    <option value="9">9</option>
-                    <option value="8">8</option>
-                    <option value="7">7</option>
-                    <option value="6">6</option>
                     <option value="5">5</option>
+                    <option value="10">10</option>
                   </select>
                 entries</h5>
                 <Search placeholder="Cari User" className={classes.searchBar} onChange={handleSearch}/>
@@ -110,10 +127,10 @@ const DataReports = () => {
                 <h5>Filter Specialization</h5>
                 <select name="role" id="role" className={classes.dropdownBtn} value={specialist} onChange={handleFilterSpecialist}>
                   <option value="">Set Role</option>
-                  <option value="designer">Designer</option>
-                  <option value="management">Management</option>
-                  <option value="engineer">Engineer</option>
-                  <option value="manager">Manager</option>
+                  <option value="Frontend Developer">Frontend Developer</option>
+                  <option value="Backend Developer">Backend Developer</option>
+                  <option value="UI/UX Designer">UI/UX Designer</option>
+                  <option value="Quality Engineer">Quality Engineer</option>
                 </select>
               </div>
             </div>
@@ -130,36 +147,36 @@ const DataReports = () => {
                         <td>#</td>
                         <td>Roll No.</td>
                         <td>Full Name</td>
+                        <td>Course Name</td>
                         <td>Specialist</td>
-                        <td width="25%">Email</td>
                         <td>Reports</td>
                         <td>Certificates</td>
                       </tr>
                     </thead>
                     <tbody>
                       {
-                        currentUsers.filter((user) => {
+                        currentCourseTaken.filter((courseTaken) => {
                           if(searchTerm === "") {
-                            return user
-                          } else if (user.fullName.toLowerCase().includes(searchTerm.toLowerCase())) {
-                            return user 
+                            return courseTaken
+                          } else if (courseTaken.user?.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+                            return courseTaken 
                           } return false
-                        }).map((user, idx) => {
+                        }).map((courseTaken, idx) => {
                           return(
                             <tr key={idx}>
                               {
-                                  user?.image_url === "" || user?.image_url === null ? (
+                                  courseTaken.user?.image_url === "" || courseTaken.user?.image_url === null ? (
                                       <img src={DefaultProfile} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
                                   ) : (
-                                      <img src={user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                      <img src={courseTaken.user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
                                   )
                               }
-                              <td>&emsp;{idx+1}</td>
-                              <td>{user?.name}</td>
-                              <td>{user?.user_specialization?.name}</td>
-                              <td>{user?.username}</td>
-                              <td><Button name="Unduh" className={classes.downloadBtn}/></td>
-                              <td><Button name="Unduh" className={classes.downloadBtn}/></td>
+                              <td>&emsp;{courseTaken.id}</td>
+                              <td>{courseTaken.user?.name}</td>
+                              <td>{courseTaken.course_take?.name}</td>
+                              <td>{courseTaken.user?.user_specialization?.name}</td>
+                              <td><Button name="Unduh" className={classes.downloadBtn} onClick={() => handlerDownloadDataReport(courseTaken.id)}/></td>
+                              <td><Button name="Unduh" className={classes.downloadBtn} onClick={() => handlerDownloadCertificate(courseTaken.id)}/></td>
                             </tr>
                           )
                         })
@@ -173,8 +190,8 @@ const DataReports = () => {
           {
             specialist === "" ? (
               <div className={classes.pagination}>
-                <h6>Showing {currentPage} to {totalPage} of {users.length} entries</h6>
-                <Pagination dataPerPage={dataPerPage} totalData={users.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
+                <h6>Showing {currentPage} to {totalPage} of {allCourseTaken.length} entries</h6>
+                <Pagination dataPerPage={dataPerPage} totalData={allCourseTaken.length} paginate={paginate} prevPage={prevPage} nextPage={nextPage} currentPage={currentPage}/>
               </div>
             ) : (
               <div className={classes.pagination}>

@@ -4,13 +4,16 @@ import Header from '../../Components/Header/Header';
 import Sidebar from '../../Components/Navigation/Sidebar'
 import classes from "./Dashboard.module.css";
 import Footer from '../../Components/Footer/Footer';
-import { BASE_URL, getToken } from '../../Configs/APIAuth';
+import { BASE_URL, getToken, removeAdminSession } from '../../Configs/APIAuth';
 import axios from 'axios';
 import Chart from "./Chart.js";
 import { BASE_URL3 } from '../../Configs/MockAPI';
 import Activity from './Activity';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [courseData, setCourseData] = useState([]);
   const [usersData, setUsersData] = useState([]);
   const [requestsData, setRequestsData] = useState([]);
@@ -30,7 +33,19 @@ function Dashboard() {
     axios(configGetAllCourses).then(res => {
       setLoading(false);
       setCourseData(res.data.data);
-    }).catch(err => console.log(err));
+    }).catch(err => {
+      setLoading(false);
+      if(err.response.status === 403) {
+        Swal.fire(
+          'Oops!',
+          'Sesi anda telah berakhir, silahkan login kembali',
+          'warning'
+        ).then(() => {
+          removeAdminSession();
+          navigate("/login")
+        })
+      }
+    });
 
     var configGetAllUsers= {
       method: 'get',
@@ -39,7 +54,13 @@ function Dashboard() {
         'Authorization': `Bearer ${token}`
       }
     };
-    axios(configGetAllUsers).then(res => setUsersData(res.data.data)).catch(err => console.log(err));
+    axios(configGetAllUsers).then(res => {
+      setLoading(false)
+      setUsersData(res.data.data)
+    }).catch(err => {
+      setLoading(false);
+      console.log(err)
+    });
 
     var configGetAllRequests= {
       method: 'get',
@@ -51,7 +72,7 @@ function Dashboard() {
     axios(configGetAllRequests).then(res => setRequestsData(res.data.data)).catch(err => console.log(err));
 
     axios.get(`${BASE_URL3}/Recent_Activity`).then(res => setActivityData(res.data)).catch(err => console.log(err.message));
-  }, [])
+  }, [navigate])
 
   // GET ONLY ROLE USER
   const roleUserData = usersData.filter(user => user.roles[0].name === "ROLE_USER");
@@ -91,7 +112,7 @@ function Dashboard() {
                 <button type="button" className={classes.btninfoall}>View All</button> 
               </div>
               
-              <Activity data={activityData} />
+              <Activity data={activityData} loading={loading}/>
             </div>
           </div>
         </div>
