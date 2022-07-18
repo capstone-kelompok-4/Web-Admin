@@ -18,7 +18,6 @@ const EditSection = ({onDelete, getSectionById}) => {
   const indexOfLastParticipant = currentPage * dataPerPage;
   const indexOfFirstParticipant = indexOfLastParticipant - dataPerPage;
   let currentCourse =  dataFromParent.courses.slice(indexOfFirstParticipant, indexOfLastParticipant);
-  console.log(currentCourse);
   
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);

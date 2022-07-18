@@ -152,9 +152,9 @@ function ManageUsers() {
                   <div className='d-grid gap-4' style={{fontFamily: "Poppins"}}>
                     <h5 className='mb-0'>Show 
                     <select name="entries" id="entries" className={classes.dropdownBtn} value={dataPerPage} onChange={handleShowEntries}>
-                      <option value="3">3</option>
-                      <option value="5">5</option>
+                      <option value="10">10</option>
                       <option value="7">7</option>
+                      <option value="5">5</option>
                     </select>
                      entries</h5>
                     <div className='d-flex align-items-center'>
