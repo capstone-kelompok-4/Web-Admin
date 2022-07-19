@@ -50,11 +50,21 @@
 .sectionCourse > form > input{
   width: 70%;
   padding: 20px;
-  border: 1px solid #0D2341;
+  border: none;
+  outline: 1px solid #0D2341;
   border-radius: 10px;
   font-size: 18px;
   font-family: "Poppins", sans-serif;
   margin: 1rem 0;
+}
+
+.sectionCourse > form > input:focus{
+  outline: 1px solid#FF6C00;
+  color: #FF6C00;
+}
+
+.sectionCourse > form > input:focus::placeholder{
+  color: #FF6C00;
 }
 
 .sectionCourse > form > input::placeholder{

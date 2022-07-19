@@ -116,7 +116,7 @@ function EditUser() {
       "email": user.username,
       "phone_number": user.phone_number,
       "image_url": url,
-      "specialization_id": user.user_specialization,
+      "specialization_id": user.user_specialization.id,
       "address": {
         "detail_address": user.address.detail_address,
         "country": user.address.country,

@@ -166,12 +166,12 @@ const DataReports = () => {
                             <tr key={idx}>
                               {
                                   courseTaken.user?.image_url === "" || courseTaken.user?.image_url === null ? (
-                                      <img src={DefaultProfile} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                      <img src={DefaultProfile} alt="photoProfile" width="50px" height="50px" style={{borderRadius: "50%"}} />
                                   ) : (
-                                      <img src={courseTaken.user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                      <img src={courseTaken.user?.image_url} alt="photoProfile" width="50px" height="50px" style={{borderRadius: "50%"}} />
                                   )
                               }
-                              <td>&emsp;{courseTaken.id}</td>
+                              <td>&emsp;{idx + 1}</td>
                               <td>{courseTaken.user?.name}</td>
                               <td>{courseTaken.course_take?.name}</td>
                               <td>{courseTaken.user?.user_specialization?.name}</td>

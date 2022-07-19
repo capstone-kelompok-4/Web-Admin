@@ -14,6 +14,7 @@ import { CircularProgress } from '@mui/material';
 
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
+  console.log(courses);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
 

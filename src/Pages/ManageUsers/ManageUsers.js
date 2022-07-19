@@ -209,9 +209,9 @@ function ManageUsers() {
                                 <td>
                                     {
                                         user?.image_url === "" || user?.image_url === null ? (
-                                            <img src={DefaultProfile} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                            <img src={DefaultProfile} alt="photoProfile" width="50px" height="50px" style={{borderRadius: "50%"}} />
                                         ) : (
-                                            <img src={user?.image_url} alt="photoProfile" width="50px" style={{borderRadius: "50%"}} />
+                                            <img src={user?.image_url} alt="photoProfile" width="50px" height="50px" style={{borderRadius: "50%"}} />
                                         )
                                     }
                                 </td>

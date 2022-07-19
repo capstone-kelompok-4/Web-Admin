@@ -141,9 +141,9 @@ const Request = () => {
                                 <td>
                                   {
                                     request.user.image_url === "" ? (
-                                      <img src={DefaultProfile} alt="avatar" width="50px" style={{borderRadius: "50%", marginRight: "20px"}}/>
+                                      <img src={DefaultProfile} alt="avatar" width="50px" height="50px" style={{borderRadius: "50%", marginRight: "20px"}}/>
                                     ) : (
-                                      <img src={request.user.image_url} alt="avatar" width="50px" style={{borderRadius: "50%", marginRight: "20px"}}/>
+                                      <img src={request.user.image_url} alt="avatar" width="50px" height="50px" style={{borderRadius: "50%", marginRight: "20px"}}/>
                                     ) 
                                   }
                                   {request.user.name}
