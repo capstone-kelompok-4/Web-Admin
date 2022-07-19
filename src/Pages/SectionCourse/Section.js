@@ -250,6 +250,7 @@ const Section = () => {
                 style={{width: "15%"}} 
                 value={section.number} 
                 onChange={handleInputChange}
+                min="0"
               />
               {error.number && <h5 className={classes.error}>{error.number}</h5>}
 
