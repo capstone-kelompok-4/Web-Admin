@@ -1,0 +1,51 @@
+/* .coursesContainer{
+  margin: 20px 70px;
+} */
+.title{
+  text-align: start;
+  font-family: "Mulish", sans-serif;
+  font-weight: bold;
+  color: #0D2341;
+  margin: 0;
+}
+.btn{
+  background: transparent;
+  color: #FF6C00;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  border-radius: 10px;
+  font-size: 18px;
+  border: none;
+  padding: 15px 25px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(100px, auto);
+  row-gap: 40px;
+  column-gap: 10px;
+  margin: 20px 0;
+}
+
+.spinnerContain{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+@media screen and (max-width: 1750px) {
+  .grid{
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width: 1350px) {
+  .grid{
+    grid-template-columns: repeat(2, 1fr);
+  } 
+}
+@media screen and (max-width: 750px) {
+  .grid{
+    grid-template-columns: repeat(1, 1fr);
+  } 
+}

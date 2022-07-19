@@ -1,0 +1,96 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+  width: 80%;
+}
+
+.containerContent {
+  background-color: #F0F5FD;
+  padding: 0 3rem 10rem;
+}
+
+/* Info */
+.infoWrapper{
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.wrapper{
+  background-color: #FFF;
+  border-radius: 12px;
+  color: #0d2341;
+  padding: 30px;
+  width: 32%;
+}
+
+.title{
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+} 
+
+.titleinfo{
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #FF6C00 !important;
+  font-size: 16px !important;
+} 
+
+.btninfoall{
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: #99a3af !important;
+  font-size: 16px !important;
+  background: transparent;
+  border-radius: 10px;
+  border: none;
+} 
+
+.wrapper > .info {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+}
+/* Info */
+
+/* Statistics & Recent Activity */
+.statisticWrapper{
+  display: flex;
+  margin: 40px 0;
+}
+
+.statisticWrapper > .left {
+  flex-basis: 60%;
+}
+.statisticWrapper > .right {
+  flex-basis: 40%;
+}
+
+.statisticWrapper > .left > .statistics {
+  background-color: #FFF;
+  border-radius: 12px;
+  color: #0d2341;
+  padding: 30px;
+  width: 95%;
+  height: 400px;
+}
+
+.statistics > canvas {
+  margin-top: 10px;
+  height: 320px !important;
+}
+.statisticWrapper > .right > .recentActivity{
+  background-color: #FFF;
+  border-radius: 12px;
+  color: #0d2341;
+  padding: 30px;
+  width: 100%;
+  height: 400px;
+}
+

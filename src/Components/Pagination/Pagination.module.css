@@ -1,0 +1,7 @@
+.pageItem{
+  margin-left: 10px;
+}
+
+.pageLink:focus{
+  box-shadow: none !important;
+}
