@@ -95,7 +95,7 @@ function Login() {
                     <div className="input-group mb-3">
                       <input
                         type="email"
-                        className={`form-control ${classes.forminput}`}
+                        className={`${classes.forminput}`}
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -114,7 +114,7 @@ function Login() {
                     <div className="input-group">
                       <input
                         type="password"
-                        className={`form-control ${classes.forminput}`}
+                        className={`${classes.forminput}`}
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

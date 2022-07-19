@@ -102,13 +102,17 @@
   width: 1.5rem;
 }
 
-.containerForm > form > input:focus, .containerForm > form > textarea:focus{
+.containerForm > form > input:focus, 
+.containerForm > form > textarea:focus,
+.containerForm > form > select:focus{
   outline: 1px solid #FF6C00;
   border: none;
   color: #FF6C00;
 }
 
-.containerForm > form > input:focus::placeholder, .containerForm > form > textarea:focus::placeholder {
+.containerForm > form > input:focus::placeholder, 
+.containerForm > form > textarea:focus::placeholder,
+.containerForm > form > select:focus::placeholder{
   color: #FF6C00;
 }
 

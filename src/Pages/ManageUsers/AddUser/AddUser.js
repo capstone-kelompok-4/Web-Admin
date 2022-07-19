@@ -209,6 +209,7 @@ function AddUser() {
                 required
                 value={user.password} 
                 onChange={handleInputChange}
+                minlength="8"
               />
 
               <label htmlFor="phoneNumber">Phone Number</label>

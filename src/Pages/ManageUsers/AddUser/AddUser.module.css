@@ -58,6 +58,7 @@
     font-size: 18px;
     font-family: "Poppins", sans-serif;
     margin: 1rem 0;
+    background-color: #FFF;
 }
 
 .containerForm>form>input[type=file] {
@@ -70,6 +71,17 @@
     color: #0D2341;
 }
 
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,  
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    box-shadow: 0 0 0 100px white inset !important;
+    -webkit-text-fill-color: #0D2341 !important;
+}
+input:-webkit-autofill:focus{
+    -webkit-text-fill-color: #F47522 !important;
+}
 /*  */
 .twocontent{
     display: flex !important;
