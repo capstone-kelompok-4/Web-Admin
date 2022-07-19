@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from "./Pages/Dashboard/Dashboard"
@@ -13,10 +12,10 @@ import EditUser from './Pages/ManageUsers/EditUser/EditUser';
 import DataReports from './Pages/DataReport/DataReports';
 import UploadFiles from './Pages/Upload/UploadFiles';
 import Request from './Pages/Request/Request';
-import PublicRoute from './Components/PublicRoute/PublicRoute';
-import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import Section from './Pages/SectionCourse/Section';
 import EditRequest from './Pages/Request/EditRequest';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import PublicRoute from './Components/PublicRoute/PublicRoute';
 
 
 function App() {

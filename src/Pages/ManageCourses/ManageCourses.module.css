@@ -45,6 +45,12 @@
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 18px;
+  transition: .3s all ease-in-out;
+}
+
+.addBtn:hover{
+  box-shadow: 0px 4px 32px rgba(244, 117, 34, 0.5);
+  transition: .3s all ease-in-out;
 }
 
 /* Search Bar */
@@ -87,5 +93,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: auto;
+  margin: 100px auto;
 }

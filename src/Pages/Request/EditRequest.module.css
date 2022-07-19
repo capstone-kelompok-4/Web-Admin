@@ -52,22 +52,32 @@
 .editRequest > form > input, .editRequest > form > select, .editRequest > form > textarea{
   width: 60%;
   padding: 20px;
-  border: 1px solid #0D2341;
+  border: none;
+  outline: 1px solid #0D2341;
   border-radius: 10px;
   font-size: 18px;
   font-family: "Poppins", sans-serif;
   margin: 1rem 0;
 }
+
+.editRequest > form > input:focus, .editRequest > form > select:focus, .editRequest > form > textarea:focus{
+  outline: 1px solid #FF6C00;
+  color: #FF6C00;
+}
 .editRequest > form > input[name='specialization'], .editRequest > form > input[name="email"], .editRequest > form > input[name="requestTitle"]{
   width: 40%;
 }
+
 .editRequest > form > input[name='specialization']{
   background-color: #D6DEEC;
   border: none;
+  outline: none;
 }
+
 .editRequest > form > input[name="requestType"], .editRequest > form > select[name="status"]{
   width: 25%;
 }
+
 .buttonWrapper {
   display: flex;
   column-gap: 20px;
@@ -83,5 +93,10 @@
   font-family: "Poppins", sans-serif;
   font-size: 18px;
   font-weight: 500;
+  transition: .3s all ease-in-out;
+}
 
+.btnSave:hover{
+  box-shadow: 0px 4px 32px rgba(244, 117, 34, 0.5);
+  transition: .3s all ease-in-out;
 }

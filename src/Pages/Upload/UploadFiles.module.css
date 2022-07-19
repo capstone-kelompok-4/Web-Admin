@@ -40,7 +40,8 @@
 .uploadFiles > form > textarea {
   width: 100%;
   padding: 20px;
-  border: 1px solid #0D2341;
+  border: none;
+  outline: 1px solid #0D2341;
   border-radius: 10px;
   font-size: 18px;
   font-family: "Poppins", sans-serif;
@@ -50,11 +51,23 @@
 .uploadFiles > form > input{
   width: 70%;
   padding: 20px;
-  border: 1px solid #0D2341;
+  outline: 1px solid #0D2341;
+  border: none;
   border-radius: 10px;
   font-size: 18px;
   font-family: "Poppins", sans-serif;
   margin: 1rem 0;
+}
+
+.uploadFiles > form > input:focus,
+.uploadFiles > form > textarea:focus{
+  outline: 1px solid #FF6C00;
+  color: #FF6C00;
+}
+
+.uploadFiles > form > input:focus::placeholder,
+.uploadFiles > form > textarea:focus::placeholder{
+  color: #FF6C00;
 }
 
 .uploadFiles > form > select{
@@ -86,4 +99,10 @@
   border: none;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
+  transition: .3s all ease-in-out;
+}
+
+.btnSave:hover{
+  box-shadow: 0px 4px 32px rgba(244, 117, 34, 0.5);
+  transition: .3s all ease-in-out;
 }

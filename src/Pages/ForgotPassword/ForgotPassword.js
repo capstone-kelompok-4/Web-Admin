@@ -1,18 +1,10 @@
 import React, { useState } from 'react'
-// import { Alert } from 'react-bootstrap';
-// import CenteredSpinner from '../../Components/Loading/CenteredSpinner';
 import Navbar from '../../Components/Navigation/Navbar';
 import classes from "./ForgotPassword.module.css"
 
 function ForgotPassword() {    
-    // const [loading, setLoading] = useState(false);
-    const [email, setEmail] = useState("") 
-    // const [error, setError] = useState("");
-    // const [message, setMessage] = useState("");
-    const resetPasswordHandler = () => {
-        
-    }
-    
+    const [email, setEmail] = useState("");
+
   return (
     <>
         <Navbar />
@@ -28,22 +20,11 @@ function ForgotPassword() {
                                 <div className="d-flex flex-column">
                                     <label htmlFor="email" className={`form=label mb-2 ${classes.labeltext}`}>Your email</label>
                                     <div className="input-group mb-3">
-                                        <input type="email" className={`form-control ${classes.forminput}`} id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your Email" required/>
+                                        <input type="email" className={`${classes.forminput}`} id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your Email" required/>
                                     </div>
                                 </div>
-                                {/* {loading && 
                                 <div className="d-flex flex-column mb-3 ">
-                                    <CenteredSpinner />
-                                </div>
-                                }
-                                {!loading && 
-                                    <div className="d-flex flex-column" style={{width: "400px"}}>
-                                        {error && <Alert variant="danger">{error}</Alert>}
-                                        {message && <Alert variant="success">{message}</Alert>}
-                                    </div>
-                                } */}
-                                <div className="d-flex flex-column mb-3 ">
-                                    <button type="button" className={`btn ${classes.buttonreset}`} onClick={resetPasswordHandler}>
+                                    <button type="button" className={`btn ${classes.buttonreset}`}>
                                         Send Reset Link
                                     </button>
                                 </div>

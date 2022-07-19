@@ -58,14 +58,26 @@ const Sidebar = ({activeNow}) => {
   }
 
   const navigate = useNavigate();
-  const logoutHandler = async () => {
-    await removeAdminSession();
-    await Swal.fire(
-      'Logout!',
-      'Succesfully Logout.',
-      'success'
-    )
-    await navigate("/login");
+  const logoutHandler = () => {
+    Swal.fire({
+      title: 'Logout ?',
+      text: "Are you sure want to logout?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await Swal.fire(
+          'Logout!',
+          'Successfully Logout',
+          'success'
+        )
+        removeAdminSession();
+        navigate("/login");
+      }
+    })
   }
 
   return (

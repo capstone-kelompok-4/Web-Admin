@@ -6,6 +6,7 @@ import Navbar from "../../Components/Navigation/Navbar";
 import { Alert } from "react-bootstrap";
 import { BASE_URL, getToken, setAdminSession, setAdminTokenSession } from "../../Configs/APIAuth";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Login() {
   const [loading, setLoading] = useState(false);
@@ -44,10 +45,15 @@ function Login() {
           }
         };
         axios(config)
-        .then(res => {
+        .then( async (res) => {
           if(res.data.data.roles[0].name === "ROLE_USER") {
             setError("Only Role Admin can Login")
           } else {
+            await Swal.fire(
+              "Success!",
+              "Login Success!",
+              "success"
+            )
             setAdminSession(res.data.data)
             navigate("/");
           }
@@ -89,7 +95,7 @@ function Login() {
                     <div className="input-group mb-3">
                       <input
                         type="email"
-                        className={`form-control ${classes.forminput}`}
+                        className={`${classes.forminput}`}
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -108,7 +114,7 @@ function Login() {
                     <div className="input-group">
                       <input
                         type="password"
-                        className={`form-control ${classes.forminput}`}
+                        className={`${classes.forminput}`}
                         id="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
